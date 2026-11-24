@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrapy Studio - Web Intelligence Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    pre, code, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex antialiased">
+
+  <!-- Left Sidebar Navigation -->
+  <aside class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col justify-between fixed inset-y-0 left-0 z-40 transition-transform">
+    <div>
+      <!-- App Branding -->
+      <div class="h-16 px-6 border-b border-slate-200 flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-slate-900 tracking-tight">Scrapy Studio</h1>
+          <p class="text-[11px] text-slate-500 font-medium">Enterprise Crawler</p>
+        </div>
+      </div>
+
+      <!-- Navigation Section -->
+      <div class="p-4 space-y-6">
+        <div>
+          <p class="px-3 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Workspace</p>
+          <nav class="mt-2 space-y-1">
+            
+            <!-- Tab: Scraper -->
+            <button onclick="navigateToTab('scraper')" id="nav-scraper" class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+                <span>Scraper</span>
+              </div>
+            </button>
+
+            <!-- Tab: Competitors -->
+            <button onclick="navigateToTab('competitors')" id="nav-competitors" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <span>Competitors</span>
+              </div>
+              <span id="navCompetitorBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">0</span>
+            </button>
+
+            <!-- Tab: Extracted Records -->
+            <button onclick="navigateToTab('records')" id="nav-records" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zm0 5h16M9 4v16"/>
+                </svg>
+                <span>Extracted Records</span>
+              </div>
+              <span id="navRecordsBadge" class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">0</span>
+            </button>
+
+            <!-- Tab: Logs -->
+            <button onclick="navigateToTab('logs')" id="nav-logs" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span>Execution Logs</span>
+              </div>
+            </button>
+
+            <!-- Tab: Advanced Code -->
+            <button onclick="navigateToTab('advanced')" id="nav-advanced" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                </svg>
+                <span>Spider Code</span>
+              </div>
+            </button>
+
+          </nav>
+        </div>
+
+        <!-- Supabase Cloud Integration Card -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1.5">
+              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zm0 5h16M9 4v16"/>
+              </svg>
+              <span class="text-[11px] font-bold text-slate-800">Supabase Cloud DB</span>
+            </div>
+            <span id="supabaseStatusDot" class="w-2 h-2 rounded-full bg-emerald-500" title="Connected"></span>
+          </div>
+          <p class="text-[10px] text-slate-500 font-mono truncate" id="supabaseUrlText">twwapvttxabmdvlzkuef</p>
+          <div class="flex items-center space-x-2 pt-0.5">
+            <button onclick="viewSupabaseSchema()" class="text-[10px] text-blue-600 hover:underline font-medium">SQL Schema</button>
+            <span class="text-slate-300">|</span>
+            <a href="https://supabase.com/dashboard/project/twwapvttxabmdvlzkuef/sql" target="_blank" class="text-[10px] text-slate-600 hover:text-slate-900 flex items-center space-x-0.5">
+              <span>SQL Editor</span>
+              <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Reference Guide -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+          <p class="text-[11px] font-semibold text-slate-700">Crawler Capabilities</p>
+          <ul class="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
+            <li>Single-page applications (React/Vite)</li>
+            <li>Multi-page recursive pagination</li>
+            <li>Competitor domain discovery</li>
+            <li>Zero selector configuration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engine Status Footer -->
+    <div class="p-4 border-t border-slate-200 bg-slate-50/50">
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center space-x-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500" id="statusDot"></span>
+          <span class="font-medium text-slate-700" id="statusText">Engine Ready</span>
+        </div>
+        <span class="text-[11px] text-slate-400 font-mono">v2.20.0</span>
+      </div>
+      <p class="text-[10px] text-slate-400 mt-1 font-mono">http://127.0.0.1:5000</p>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 ml-64 flex flex-col min-h-screen">
+    
+    <!-- Top Bar -->
+    <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center space-x-3">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400" id="currentSectionBreadcrumb">Workspace</span>
+        <span class="text-slate-300">/</span>
+        <h2 class="text-sm font-bold text-slate-900" id="currentSectionTitle">Universal Scraper</h2>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2 bg-slate-100 rounded-lg p-1 border border-slate-200 text-xs">
+          <button onclick="navigateToTab('scraper')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Dashboard</button>
+          <button onclick="navigateToTab('competitors')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Competitors</button>
+          <button onclick="navigateToTab('records')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Data Grid</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 p-8 space-y-6 max-w-7xl w-full">
+
+      <!-- ================= SECTION 1: SCRAPER / DASHBOARD ================= -->
+      <section id="section-scraper" class="space-y-6">
+        
+        <!-- Hero Input Card -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5">
+          <div class="space-y-1">
+            <h3 class="text-lg font-bold text-slate-900">Universal Website Extraction</h3>
+            <p class="text-xs text-slate-500">Provide any target website URL. Scrapy automatically extracts data listings, structured cards, contact metadata, and identifies relevant competitors.</p>
+          </div>
+
+          <!-- URL Input & Submission Bar -->
+          <form onsubmit="handleUniversalSubmit(event)" class="space-y-3">
+            <div class="flex flex-col sm:flex-row items-center gap-2.5">
+              <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  id="universalUrlInput" 
+                  value="https://luma-scents.vercel.app/"
+                  placeholder="Enter target URL (e.g. https://example.com)..." 
+                  class="w-full bg-slate-50/50 border border-slate-300 focus:border-blue-600 focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 font-mono transition"
+                  required
+                >
+              </div>
+
+              <!-- Depth selector -->
+              <div class="w-full sm:w-auto">
+                <select id="maxPagesSelect" class="w-full sm:w-48 bg-slate-50/50 border border-slate-300 focus:border-blue-600 focus:bg-white rounded-xl px-3 py-2.5 text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="1">1 Page (Single URL)</option>
+                  <option value="5" selected>Up to 5 Pages (Pagination)</option>
+                  <option value="10">Up to 10 Pages (Deep Crawl)</option>
+                  <option value="25">Up to 25 Pages (Full Catalog)</option>
+                </select>
+              </div>
+              
+              <!-- Submit button -->
+              <button 
+                type="submit" 
+                id="btnScrapeUniversal"
+                class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold text-xs shadow-sm transition flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                </svg>
+                <span id="btnScrapeText">Start Extraction</span>
+              </button>
+            </div>
+
+            <!-- Quick Samples -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+              <span class="text-slate-400 text-[11px] font-medium">Quick examples:</span>
+              <button type="button" onclick="setSampleUrl('https://luma-scents.vercel.app/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
+                Luma Scents (SPA Perfume)
+              </button>
+              <button type="button" onclick="setSampleUrl('https://quotes.toscrape.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
+                Quotes to Scrape
+              </button>
+              <button type="button" onclick="setSampleUrl('https://books.toscrape.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
+                Books to Scrape (Multi-Page)
+              </button>
+              <button type="button" onclick="setSampleUrl('https://news.ycombinator.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
+                Hacker News
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Live Competitor Discovery Alert Banner -->
+        <div id="scraperCompetitorBanner" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs text-blue-900 hidden transition shadow-sm">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+            <span class="font-medium text-slate-800">Competitors Discovered: <strong id="scraperCompetitorCount" class="text-blue-700 font-bold">0 brands</strong> found in this niche!</span>
+          </div>
+          <button onclick="navigateToTab('competitors')" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold rounded-xl text-xs shadow-sm transition flex items-center space-x-1.5 cursor-pointer">
+            <span>View Competitor Cards</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Target Website Overview Card -->
+        <div id="websiteOverviewCard" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hidden space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div class="flex items-center space-x-3.5">
+              <img id="siteFavicon" src="" alt="favicon" class="w-8 h-8 rounded-lg bg-slate-50 p-1 object-contain border border-slate-200" onerror="this.style.display='none'">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h3 id="siteTitle" class="text-sm font-bold text-slate-900 leading-tight">Target Site</h3>
+                  <span id="spaBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-medium hidden">React SPA</span>
+                </div>
+                <a id="siteUrlLink" href="#" target="_blank" class="text-xs text-blue-600 hover:underline font-mono">https://...</a>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <span class="text-xs px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-mono font-medium" id="statsItemsCount">
+                0 items
+              </span>
+              <button onclick="navigateToTab('competitors')" id="viewCompetitorsPill" class="hidden text-xs px-3 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 font-medium hover:bg-blue-100 transition flex items-center space-x-1.5">
+                <span>View Competitors</span>
+                <span id="overviewCompetitorCount" class="font-bold"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-xs">
+            <div class="md:col-span-8 space-y-1.5">
+              <p class="text-slate-400 font-medium text-[11px]">Site Description:</p>
+              <p id="siteDesc" class="text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200/80">No description available.</p>
+            </div>
+            <div class="md:col-span-4 space-y-1.5">
+              <p class="text-slate-400 font-medium text-[11px]">Detected Contacts & Social:</p>
+              <div id="siteContacts" class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 space-y-1 text-[11px] text-slate-600">
+                <span class="text-slate-400 italic">None detected</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-Column Split: Progress Log & Quick Data Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Mini Console preview (5 cols) -->
+          <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+            <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                <span class="text-xs font-semibold text-slate-700">Crawler Output</span>
+              </div>
+              <button onclick="navigateToTab('logs')" class="text-xs text-blue-600 hover:underline font-medium">Expand Logs</button>
+            </div>
+            <div id="miniLogOutput" class="p-4 bg-slate-900 text-slate-200 font-mono text-xs h-72 overflow-y-auto space-y-1 select-text">
+              <div class="text-slate-500 italic">Ready to crawl. Enter a URL above and click 'Start Extraction'.</div>
+            </div>
+          </div>
+
+          <!-- Quick Results Card (7 cols) -->
+          <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <div class="flex items-center space-x-2.5">
+                <h4 class="text-xs font-bold text-slate-900">Extracted Summary</h4>
+                <span id="quickItemBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 font-medium">0 records</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="navigateToTab('records')" class="text-xs text-blue-600 hover:underline font-medium">View Full Data Grid</button>
+              </div>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-center items-center text-center text-xs text-slate-400" id="quickResultsPlaceholder">
+              <svg class="w-8 h-8 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              <span>No items scraped yet. Execute an extraction to populate data.</span>
+            </div>
+            <div id="quickResultsPreview" class="hidden max-h-72 overflow-y-auto divide-y divide-slate-100">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION 2: COMPETITORS TAB ================= -->
+      <section id="section-competitors" class="space-y-6 hidden">
+        
+        <!-- Competitor Direct Search Bar -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+          <div class="space-y-0.5">
+            <h4 class="text-xs font-bold text-slate-900">Analyze Competitors for Any Website</h4>
+            <p class="text-[11px] text-slate-500">Enter any brand URL below to detect competitor brands, compare similar websites, and scrape their catalogs directly.</p>
+          </div>
+          <form onsubmit="handleCompetitorTabSubmit(event)" class="flex flex-col sm:flex-row items-center gap-2">
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+              </div>
+              <input 
+                type="text" 
+                id="competitorTabUrlInput" 
+                value="https://luma-scents.vercel.app/"
+                placeholder="Enter brand URL (e.g. https://example.com)..." 
+                class="w-full bg-slate-50/50 border border-slate-300 focus:border-blue-600 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 font-mono transition"
+                required
+              >
+            </div>
+            <button 
+              type="submit" 
+              id="btnFindCompetitors"
+              class="w-full sm:w-auto px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold text-xs shadow-sm transition flex items-center justify-center space-x-1.5 whitespace-nowrap cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <span>Discover Competitors</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Competitor Header Banner -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center space-x-2.5">
+                <h3 class="text-sm font-bold text-slate-900">Competitor Intelligence</h3>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold" id="competitorTotalBadge">0 Identified</span>
+              </div>
+              <p class="text-xs text-slate-500">
+                Similar brands and competitor websites operating in the same market sector or offering alternative products.
+              </p>
+            </div>
+            <div class="text-xs text-slate-500 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
+              Target Market Query: <code id="competitorQueryText" class="font-mono text-blue-600 font-semibold">Automatic</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Scanning State (Shown immediately when extraction starts) -->
+        <div id="competitorsLoadingState" class="bg-white border border-slate-200 rounded-2xl p-8 text-center space-y-4 shadow-sm hidden">
+          <div class="flex items-center justify-center space-x-2.5">
+            <span class="w-3 h-3 rounded-full bg-blue-600 animate-ping"></span>
+            <span class="text-xs font-bold text-slate-900">Discovering Competitors in Real Time...</span>
+          </div>
+          <p class="text-xs text-slate-500 max-w-md mx-auto" id="competitorLoadingSubtitle">
+            Scanning website metadata and querying market rivals...
+          </p>
+          <!-- Skeleton Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-3">
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 animate-pulse text-left">
+              <div class="h-4 bg-slate-200 rounded w-2/3"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div class="h-12 bg-slate-200 rounded w-full"></div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 animate-pulse text-left">
+              <div class="h-4 bg-slate-200 rounded w-2/3"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div class="h-12 bg-slate-200 rounded w-full"></div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 animate-pulse text-left">
+              <div class="h-4 bg-slate-200 rounded w-2/3"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div class="h-12 bg-slate-200 rounded w-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State for Competitors -->
+        <div id="competitorsEmptyState" class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3 shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <h4 class="text-sm font-bold text-slate-800">No Competitor Brands Discovered Yet</h4>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">
+            When you crawl any target site (e.g. perfume, e-commerce, software), Scrapy will identify its niche and surface competing websites here automatically.
+          </p>
+          <div class="pt-2">
+            <button onclick="setSampleUrl('https://luma-scents.vercel.app/'); handleUniversalSubmit();" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition cursor-pointer">
+              Run Sample Scrape (Luma Scents Perfume)
+            </button>
+          </div>
+        </div>
+
+        <!-- Competitor Cards Grid -->
+        <div id="competitorsGridContainer" class="hidden">
+          <div id="competitorsCardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION 3: EXTRACTED RECORDS TAB ================= -->
+      <section id="section-records" class="space-y-6 hidden">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+          
+          <!-- Records Toolbar -->
+          <div class="p-5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+              <h3 class="text-sm font-bold text-slate-900">Extracted Dataset</h3>
+              <span id="recordsCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-mono font-medium">0 items</span>
+            </div>
+
+            <!-- Export & Sync Buttons -->
+            <div class="flex items-center space-x-2.5">
+              <button onclick="syncCurrentJobToSupabase()" id="btnSyncSupabase" disabled class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-semibold text-emerald-800 border border-emerald-200 transition flex items-center space-x-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <span id="btnSyncSupabaseText">Sync to Supabase</span>
+              </button>
+              <button onclick="exportData('json')" id="btnExportJson" disabled class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium text-slate-700 border border-slate-300 transition flex items-center space-x-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span>Export JSON</span>
+              </button>
+              <button onclick="exportData('csv')" id="btnExportCsv" disabled class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium text-slate-700 border border-slate-300 transition flex items-center space-x-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span>Export CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Supabase Schema Status Banner -->
+          <div id="supabaseSchemaNotice" class="bg-amber-50 border-b border-amber-200 p-3.5 px-5 flex flex-wrap items-center justify-between gap-3 text-xs text-amber-900 hidden">
+            <div class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span>Supabase connected! Tables (<code>extractions</code>, <code>scraped_items</code>, <code>competitors</code>) need to be created.</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="viewSupabaseSchema()" class="px-2.5 py-1 rounded bg-white border border-amber-300 font-semibold text-amber-800 text-[11px] shadow-sm hover:bg-amber-100">
+                View SQL Script
+              </button>
+              <a href="https://supabase.com/dashboard/project/twwapvttxabmdvlzkuef/sql" target="_blank" class="px-2.5 py-1 rounded bg-amber-600 text-white font-semibold text-[11px] shadow-sm hover:bg-amber-700 flex items-center space-x-1">
+                <span>Open Supabase SQL Editor</span>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Filter & View Switcher -->
+          <div class="p-3.5 bg-slate-50/70 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="relative w-72">
+              <input type="text" id="searchFilter" oninput="renderResultsTable()" placeholder="Search in records..." class="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100">
+              <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <div class="flex items-center space-x-2 bg-white rounded-lg p-1 border border-slate-200">
+              <button onclick="toggleView('table')" id="viewBtn-table" class="px-2.5 py-1 rounded bg-slate-100 text-blue-700 font-semibold text-xs">Table View</button>
+              <button onclick="toggleView('raw')" id="viewBtn-raw" class="px-2.5 py-1 rounded text-slate-500 hover:text-slate-800 text-xs font-medium">Raw JSON</button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div id="resultsTableContainer" class="max-h-[500px] overflow-auto">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-50 text-slate-500 font-semibold sticky top-0 border-b border-slate-200 z-10" id="resultsTableHead">
+                <tr><th class="p-3">Results will appear here</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100" id="resultsTableBody">
+                <tr><td class="p-12 text-center text-slate-400 italic">No records collected yet. Run a scrape to view data.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Raw JSON Container -->
+          <div id="resultsRawContainer" class="p-5 bg-slate-900 font-mono text-xs max-h-[500px] overflow-auto hidden">
+            <pre id="resultsRawPre" class="text-emerald-400 whitespace-pre-wrap">[]</pre>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION 4: EXECUTION LOGS TAB ================= -->
+      <section id="section-logs" class="space-y-6 hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+          <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <span class="text-xs font-bold text-slate-800">Scrapy Execution Terminal</span>
+              <span class="text-[11px] text-slate-400 font-mono">STDOUT Stream</span>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <label class="text-slate-500 flex items-center space-x-1.5 cursor-pointer">
+                <input type="checkbox" id="autoScroll" checked class="rounded border-slate-300 text-blue-600 focus:ring-0">
+                <span>Auto-scroll</span>
+              </label>
+              <button onclick="clearLogs()" class="px-2.5 py-1 rounded bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition">Clear Console</button>
+            </div>
+          </div>
+          <div id="fullLogOutput" class="p-5 bg-slate-900 text-slate-200 font-mono text-xs h-[540px] overflow-y-auto space-y-1 select-text">
+            <div class="text-slate-500 italic">Console initialized. Awaiting next Scrapy job...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 5: ADVANCED SPIDER CODE ================= -->
+      <section id="section-advanced" class="space-y-6 hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Custom Python Spider Runner</h3>
+            <p class="text-xs text-slate-500">Run existing repository spider files or execute inline Scrapy Python classes directly against your target URLs.</p>
+          </div>
+
+          <div class="flex space-x-2 border-b border-slate-200 pb-2">
+            <button onclick="switchCodeTab('existing')" id="tabBtn-existing" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700">Repository Spider Files</button>
+            <button onclick="switchCodeTab('code')" id="tabBtn-code" class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900">Custom Spider Code</button>
+          </div>
+
+          <!-- Existing files -->
+          <div id="codeTab-existing" class="space-y-3">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <select id="spiderFileSelect" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono">
+                <option value="universal_extractor.py">universal_extractor.py (Universal Extractor + Competitors)</option>
+                <option value="luma_spider.py">luma_spider.py</option>
+                <option value="sample_spider.py">sample_spider.py</option>
+              </select>
+              <button onclick="runExistingSpider()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm transition">
+                Run Selected Spider
+              </button>
+            </div>
+          </div>
+
+          <!-- Custom Python Code -->
+          <div id="codeTab-code" class="space-y-3 hidden">
+            <textarea id="customSpiderCode" rows="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-200 resize-none">import scrapy
+
+class CustomSpider(scrapy.Spider):
+    name = "custom"
+    start_urls = ["https://quotes.toscrape.com/"]
+
+    def parse(self, response):
+        for q in response.css("div.quote"):
+            yield {
+                "text": q.css("span.text::text").get(),
+                "author": q.css("small.author::text").get(),
+            }
+</textarea>
+            <button onclick="runCustomCode()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm transition">
+              Execute Python Code
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentJobId = null;
+    let scrapedItems = [];
+    let currentOverview = null;
+    let currentCompetitors = [];
+    let currentView = 'table';
+    let activeTab = 'scraper';
+
+    const tabTitles = {
+      scraper: { breadcrumb: 'Workspace', title: 'Universal Scraper' },
+      competitors: { breadcrumb: 'Analysis', title: 'Competitor Intelligence' },
+      records: { breadcrumb: 'Data', title: 'Extracted Records' },
+      logs: { breadcrumb: 'System', title: 'Execution Logs' },
+      advanced: { breadcrumb: 'Developer', title: 'Spider Code Runner' }
+    };
+
+    function navigateToTab(tabId) {
+      activeTab = tabId;
+      const tabs = ['scraper', 'competitors', 'records', 'logs', 'advanced'];
+      tabs.forEach(t => {
+        const section = document.getElementById(`section-${t}`);
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (section) section.classList.toggle('hidden', t !== tabId);
+        if (navBtn) {
+          if (t === tabId) {
+            navBtn.className = "w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 transition";
+          } else {
+            navBtn.className = "w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition";
+          }
+        }
+      });
+
+      const meta = tabTitles[tabId] || { breadcrumb: 'Workspace', title: 'Dashboard' };
+      document.getElementById('currentSectionBreadcrumb').textContent = meta.breadcrumb;
+      document.getElementById('currentSectionTitle').textContent = meta.title;
+
+      if (tabId === 'records') renderResultsTable();
+    }
+
+    function setSampleUrl(url) {
+      document.getElementById('universalUrlInput').value = url;
+      const compInput = document.getElementById('competitorTabUrlInput');
+      if (compInput) compInput.value = url;
+    }
+
+    function handleCompetitorTabSubmit(e) {
+      if (e) e.preventDefault();
+      const url = document.getElementById('competitorTabUrlInput').value.trim();
+      if (!url) return;
+      document.getElementById('universalUrlInput').value = url;
+      handleUniversalSubmit();
+    }
+
+    async function handleUniversalSubmit(e) {
+      if (e) e.preventDefault();
+      const url = document.getElementById('universalUrlInput').value.trim();
+      if (!url) return;
+
+      const compInput = document.getElementById('competitorTabUrlInput');
+      if (compInput) compInput.value = url;
+
+      const maxPages = parseInt(document.getElementById('maxPagesSelect').value, 10) || 5;
+      const btn = document.getElementById('btnScrapeUniversal');
+      const btnText = document.getElementById('btnScrapeText');
+      const compBtn = document.getElementById('btnFindCompetitors');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = "Extracting...";
+      if (compBtn) compBtn.disabled = true;
+
+      // Reset and display active real-time discovery state in Competitors tab
+      currentCompetitors = [];
+      const emptyState = document.getElementById('competitorsEmptyState');
+      const loadingState = document.getElementById('competitorsLoadingState');
+      const gridContainer = document.getElementById('competitorsGridContainer');
+      const banner = document.getElementById('scraperCompetitorBanner');
+
+      if (emptyState) emptyState.classList.add('hidden');
+      if (gridContainer) gridContainer.classList.add('hidden');
+      if (loadingState) {
+        loadingState.classList.remove('hidden');
+        document.getElementById('competitorLoadingSubtitle').textContent = `Analyzing market niche and identifying competitors for: ${url}`;
+      }
+      if (banner) banner.classList.add('hidden');
+
+      clearLogs();
+      appendLog(`[*] Target URL: ${url}`);
+      appendLog(`[*] Crawl scope: Up to ${maxPages} page(s)`);
+      appendLog(`[*] Competitor search activated: Identifying similar brands...`);
+
+      try {
+        const res = await fetch('/api/scrape/universal', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: url, max_pages: maxPages })
+        });
+        const data = await res.json();
+        if (data.job_id) {
+          listenToStream(data.job_id);
+        } else {
+          alert(data.error || 'Failed to start extraction');
+          if (btn) btn.disabled = false;
+          if (btnText) btnText.textContent = "Start Extraction";
+          if (compBtn) compBtn.disabled = false;
+          if (loadingState) loadingState.classList.add('hidden');
+          if (emptyState) emptyState.classList.remove('hidden');
+        }
+      } catch (err) {
+        alert('Extraction request failed: ' + err);
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = "Start Extraction";
+        if (compBtn) compBtn.disabled = false;
+        if (loadingState) loadingState.classList.add('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+      }
+    }
+
+    function showCompetitorDiscoveryNotice(count) {
+      const banner = document.getElementById('scraperCompetitorBanner');
+      const countEl = document.getElementById('scraperCompetitorCount');
+      if (banner && countEl) {
+        countEl.textContent = `${count} brand${count === 1 ? '' : 's'}`;
+        banner.classList.remove('hidden');
+      }
+    }
+
+    function listenToStream(jobId) {
+      currentJobId = jobId;
+      const evtSource = new EventSource(`/api/jobs/${jobId}/stream`);
+
+      const pollTimer = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/jobs/${jobId}/results`);
+          const data = await res.json();
+
+          // Real-time competitor update from polling fallback
+          if (data.competitors && data.competitors.length > 0 && currentCompetitors.length === 0) {
+            currentCompetitors = data.competitors;
+            renderCompetitors(currentCompetitors);
+            showCompetitorDiscoveryNotice(currentCompetitors.length);
+          }
+
+          if (data.overview && !currentOverview) {
+            currentOverview = data.overview;
+            renderOverviewCard(currentOverview);
+          }
+
+          if (data.status === 'completed' || data.status === 'failed') {
+            clearInterval(pollTimer);
+            evtSource.close();
+            onJobComplete(jobId);
+          }
+        } catch (e) {}
+      }, 1000);
+
+      evtSource.onmessage = (e) => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (msg.type === 'log') {
+            appendLog(msg.line);
+          } else if (msg.type === 'competitors') {
+            currentCompetitors = msg.competitors || [];
+            if (msg.query) {
+              document.getElementById('competitorQueryText').textContent = msg.query;
+            }
+            renderCompetitors(currentCompetitors);
+            showCompetitorDiscoveryNotice(currentCompetitors.length);
+          } else if (msg.type === 'overview') {
+            currentOverview = msg.overview;
+            renderOverviewCard(currentOverview);
+          } else if (msg.type === 'done') {
+            clearInterval(pollTimer);
+            evtSource.close();
+            onJobComplete(jobId);
+          }
+        } catch (err) {
+          appendLog(e.data);
+        }
+      };
+
+      evtSource.onerror = () => {
+        // Handled by pollTimer
+      };
+    }
+
+    function onJobComplete(jobId) {
+      const btn = document.getElementById('btnScrapeUniversal');
+      const btnText = document.getElementById('btnScrapeText');
+      const compBtn = document.getElementById('btnFindCompetitors');
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Start Extraction";
+      if (compBtn) compBtn.disabled = false;
+      fetchResults(jobId);
+    }
+
+    async function fetchResults(jobId) {
+      try {
+        const res = await fetch(`/api/jobs/${jobId}/results`);
+        const data = await res.json();
+        scrapedItems = data.items || [];
+        currentOverview = data.overview || null;
+        if (data.competitors && data.competitors.length) {
+          currentCompetitors = data.competitors;
+        }
+
+        renderOverviewCard(currentOverview);
+        renderCompetitors(currentCompetitors);
+        renderQuickPreview(scrapedItems);
+        
+        document.getElementById('navRecordsBadge').textContent = scrapedItems.length;
+        document.getElementById('recordsCountBadge').textContent = `${scrapedItems.length} records`;
+        document.getElementById('quickItemBadge').textContent = `${scrapedItems.length} records`;
+        document.getElementById('btnExportJson').disabled = scrapedItems.length === 0 && !currentOverview;
+        document.getElementById('btnExportCsv').disabled = scrapedItems.length === 0 && !currentOverview;
+
+        const rawPayload = {
+          overview: currentOverview,
+          competitors: currentCompetitors,
+          items: scrapedItems
+        };
+        document.getElementById('resultsRawPre').textContent = JSON.stringify(rawPayload, null, 2);
+        renderResultsTable();
+      } catch (err) {
+        console.error("Failed to load results", err);
+      }
+    }
+
+    function renderCompetitors(competitors) {
+      const emptyState = document.getElementById('competitorsEmptyState');
+      const loadingState = document.getElementById('competitorsLoadingState');
+      const container = document.getElementById('competitorsGridContainer');
+      const grid = document.getElementById('competitorsCardsGrid');
+      const navBadge = document.getElementById('navCompetitorBadge');
+      const totalBadge = document.getElementById('competitorTotalBadge');
+
+      if (loadingState) loadingState.classList.add('hidden');
+
+      if (!competitors || !competitors.length) {
+        emptyState.classList.remove('hidden');
+        container.classList.add('hidden');
+        navBadge.classList.add('hidden');
+        totalBadge.textContent = "0 Identified";
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      container.classList.remove('hidden');
+      navBadge.classList.remove('hidden');
+      navBadge.textContent = competitors.length;
+      totalBadge.textContent = `${competitors.length} Identified`;
+
+      grid.innerHTML = competitors.map(c => {
+        return `
+          <div class="bg-white border border-slate-200 hover:border-blue-400 rounded-xl p-5 flex flex-col justify-between space-y-4 transition shadow-sm hover:shadow-md">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h4 class="font-bold text-slate-900 text-sm leading-snug">${c.name || c.domain}</h4>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-medium whitespace-nowrap">
+                  ${c.badge || 'Competitor'}
+                </span>
+              </div>
+              <a href="${c.url}" target="_blank" class="text-xs text-blue-600 hover:underline font-mono truncate flex items-center space-x-1">
+                <span>${c.domain}</span>
+                <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+              </a>
+              ${c.snippet ? `<p class="text-xs text-slate-500 mt-2.5 line-clamp-3 leading-relaxed">${c.snippet}</p>` : ''}
+            </div>
+            <button onclick="scrapeCompetitorUrl('${c.url}')" class="w-full py-2 px-3 rounded-lg bg-slate-50 hover:bg-blue-50 active:scale-[0.98] text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-200 text-xs font-semibold transition flex items-center justify-center space-x-1.5 cursor-pointer">
+              <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+              </svg>
+              <span>Scrape This Competitor</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function scrapeCompetitorUrl(url) {
+      document.getElementById('universalUrlInput').value = url;
+      navigateToTab('scraper');
+      handleUniversalSubmit();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderOverviewCard(overview) {
+      const card = document.getElementById('websiteOverviewCard');
+      if (!overview || !overview.title) {
+        card.classList.add('hidden');
+        return;
+      }
+
+      card.classList.remove('hidden');
+      document.getElementById('siteTitle').textContent = overview.title || "Untitled Target";
+      document.getElementById('siteUrlLink').textContent = overview.url;
+      document.getElementById('siteUrlLink').href = overview.url;
+      document.getElementById('siteDesc').textContent = overview.description || "No meta description provided.";
+
+      if (overview.favicon) {
+        document.getElementById('siteFavicon').src = overview.favicon;
+        document.getElementById('siteFavicon').style.display = "block";
+      }
+
+      if (overview.is_spa) {
+        document.getElementById('spaBadge').classList.remove('hidden');
+      } else {
+        document.getElementById('spaBadge').classList.add('hidden');
+      }
+
+      document.getElementById('statsItemsCount').textContent = `${scrapedItems.length} items`;
+
+      // Competitors pill on overview card
+      const compPill = document.getElementById('viewCompetitorsPill');
+      if (currentCompetitors && currentCompetitors.length) {
+        compPill.classList.remove('hidden');
+        document.getElementById('overviewCompetitorCount').textContent = `(${currentCompetitors.length})`;
+      } else {
+        compPill.classList.add('hidden');
+      }
+
+      // Contacts & Social
+      const contactsContainer = document.getElementById('siteContacts');
+      contactsContainer.innerHTML = '';
+      let hasContacts = false;
+
+      if (overview.emails && overview.emails.length) {
+        hasContacts = true;
+        overview.emails.forEach(email => {
+          contactsContainer.innerHTML += `<div class="flex items-center space-x-1.5"><span class="text-slate-400 font-medium">Email:</span><span class="text-blue-600 font-mono">${email}</span></div>`;
+        });
+      }
+
+      if (overview.social_links && Object.keys(overview.social_links).length) {
+        hasContacts = true;
+        Object.entries(overview.social_links).forEach(([platform, link]) => {
+          contactsContainer.innerHTML += `<div class="flex items-center space-x-1.5"><span class="capitalize text-slate-500 font-medium">${platform}:</span><a href="${link}" target="_blank" class="text-blue-600 hover:underline truncate">${link}</a></div>`;
+        });
+      }
+
+      if (!hasContacts) {
+        contactsContainer.innerHTML = `<span class="text-slate-400 italic">No contact channels identified.</span>`;
+      }
+    }
+
+    function renderQuickPreview(items) {
+      const placeholder = document.getElementById('quickResultsPlaceholder');
+      const preview = document.getElementById('quickResultsPreview');
+
+      if (!items || !items.length) {
+        placeholder.classList.remove('hidden');
+        preview.classList.add('hidden');
+        return;
+      }
+
+      placeholder.classList.add('hidden');
+      preview.classList.remove('hidden');
+      
+      const topItems = items.slice(0, 15);
+      preview.innerHTML = topItems.map(it => {
+        return `
+          <div class="p-3 flex items-center justify-between hover:bg-slate-50 transition text-xs">
+            <div class="flex items-center space-x-3 overflow-hidden pr-2">
+              ${it.image ? `<img src="${it.image}" alt="thumb" class="w-8 h-8 rounded object-cover border border-slate-200 bg-slate-50 flex-shrink-0" onerror="this.style.display='none'">` : ''}
+              <div class="truncate">
+                <p class="font-medium text-slate-800 truncate">${it.title || 'Untitled Item'}</p>
+                <p class="text-[11px] text-slate-400 truncate">${it.category || it.subtitle || it.brand || it.source_page || ''}</p>
+              </div>
+            </div>
+            ${it.price ? `<span class="font-bold text-slate-900 font-mono whitespace-nowrap text-xs">${it.price}</span>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderResultsTable() {
+      const filter = document.getElementById('searchFilter').value.toLowerCase();
+      const filtered = scrapedItems.filter(item => {
+        if (!filter) return true;
+        return JSON.stringify(item).toLowerCase().includes(filter);
+      });
+
+      const head = document.getElementById('resultsTableHead');
+      const body = document.getElementById('resultsTableBody');
+
+      if (!filtered.length) {
+        head.innerHTML = `<tr><th class="p-3 text-slate-500 font-medium">Record</th></tr>`;
+        body.innerHTML = `<tr><td class="p-10 text-center text-slate-400 italic">No matching records found.</td></tr>`;
+        return;
+      }
+
+      const primaryOrder = ['image', 'title', 'price', 'rating', 'category', 'mood', 'description', 'link', 'tags', 'source_page'];
+      const allKeys = [];
+      filtered.forEach(it => {
+        Object.keys(it).forEach(k => {
+          if (k !== 'type' && !allKeys.includes(k)) allKeys.push(k);
+        });
+      });
+
+      const sortedCols = allKeys.sort((a, b) => {
+        const iA = primaryOrder.indexOf(a);
+        const iB = primaryOrder.indexOf(b);
+        if (iA !== -1 && iB !== -1) return iA - iB;
+        if (iA !== -1) return -1;
+        if (iB !== -1) return 1;
+        return a.localeCompare(b);
+      });
+
+      head.innerHTML = `<tr>${sortedCols.map(c => `<th class="p-3 border-b border-slate-200 capitalize font-semibold text-slate-700">${c.replace('_', ' ')}</th>`).join('')}</tr>`;
+
+      body.innerHTML = filtered.map(row => {
+        return `<tr class="hover:bg-slate-50 transition">
+          ${sortedCols.map(c => {
+            let val = row[c] ?? "";
+            if (c === 'image' && val) {
+              return `<td class="p-2.5 align-middle w-14"><img src="${val}" alt="thumb" class="w-10 h-10 object-cover rounded-lg border border-slate-200 bg-slate-50" onerror="this.style.display='none'"></td>`;
+            }
+            if (c === 'price' && val) {
+              return `<td class="p-3 align-middle font-bold text-slate-900 font-mono whitespace-nowrap">${val}</td>`;
+            }
+            if (Array.isArray(val)) {
+              val = val.map(x => `<span class="inline-block bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded text-[10px] mr-1 mb-1 font-medium">${x}</span>`).join('');
+            } else if (typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'))) {
+              val = `<a href="${val}" target="_blank" class="text-blue-600 hover:underline break-all truncate max-w-xs block">${val}</a>`;
+            } else if (typeof val === 'string' && val.length > 140) {
+              val = `<span title="${val}">${val.slice(0, 140)}...</span>`;
+            }
+            return `<td class="p-3 align-middle text-slate-700">${val}</td>`;
+          }).join('')}
+        </tr>`;
+      }).join('');
+    }
+
+    function appendLog(line) {
+      const targets = [document.getElementById('miniLogOutput'), document.getElementById('fullLogOutput')];
+      
+      targets.forEach(container => {
+        if (!container) return;
+        const div = document.createElement('div');
+        let color = 'text-slate-300';
+        if (line.includes('INFO:')) color = 'text-sky-300';
+        else if (line.includes('DEBUG:')) color = 'text-slate-400';
+        else if (line.includes('WARNING:')) color = 'text-amber-300';
+        else if (line.includes('ERROR:') || line.includes('Failed')) color = 'text-rose-400 font-semibold';
+        else if (line.includes('[✓]')) color = 'text-emerald-400 font-semibold';
+        else if (line.includes('[*]')) color = 'text-blue-300';
+
+        div.className = `${color} leading-relaxed break-all`;
+        div.textContent = line;
+        container.appendChild(div);
+
+        if (document.getElementById('autoScroll').checked) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+    }
+
+    function clearLogs() {
+      const mini = document.getElementById('miniLogOutput');
+      const full = document.getElementById('fullLogOutput');
+      if (mini) mini.innerHTML = '';
+      if (full) full.innerHTML = '';
+    }
+
+    function toggleView(view) {
+      currentView = view;
+      if (view === 'table') {
+        document.getElementById('resultsTableContainer').classList.remove('hidden');
+        document.getElementById('resultsRawContainer').classList.add('hidden');
+        document.getElementById('viewBtn-table').className = "px-2.5 py-1 rounded bg-slate-100 text-blue-700 font-semibold text-xs";
+        document.getElementById('viewBtn-raw').className = "px-2.5 py-1 rounded text-slate-500 hover:text-slate-800 text-xs font-medium";
+      } else {
+        document.getElementById('resultsTableContainer').classList.add('hidden');
+        document.getElementById('resultsRawContainer').classList.remove('hidden');
+        document.getElementById('viewBtn-table').className = "px-2.5 py-1 rounded text-slate-500 hover:text-slate-800 text-xs font-medium";
+        document.getElementById('viewBtn-raw').className = "px-2.5 py-1 rounded bg-slate-100 text-blue-700 font-semibold text-xs";
+      }
+    }
+
+    function switchCodeTab(t) {
+      document.getElementById('codeTab-existing').classList.toggle('hidden', t !== 'existing');
+      document.getElementById('codeTab-code').classList.toggle('hidden', t !== 'code');
+      document.getElementById('tabBtn-existing').className = t === 'existing' ? "px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700" : "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900";
+      document.getElementById('tabBtn-code').className = t === 'code' ? "px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700" : "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900";
+    }
+
+    async function runExistingSpider() {
+      const fileName = document.getElementById('spiderFileSelect').value;
+      clearLogs();
+      navigateToTab('logs');
+      appendLog(`[*] Running spider file: ${fileName}...`);
+      try {
+        const res = await fetch('/api/scrape/file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file_name: fileName })
+        });
+        const data = await res.json();
+        if (data.job_id) listenToStream(data.job_id);
+      } catch (err) { alert('Error: ' + err); }
+    }
+
+    async function runCustomCode() {
+      const code = document.getElementById('customSpiderCode').value;
+      clearLogs();
+      navigateToTab('logs');
+      appendLog(`[*] Executing custom Python spider...`);
+      try {
+        const res = await fetch('/api/scrape/code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (data.job_id) listenToStream(data.job_id);
+      } catch (err) { alert('Error: ' + err); }
+    }
+
+    function exportData(format) {
+      if (!currentJobId) return;
+      window.open(`/api/jobs/${currentJobId}/export?format=${format}`, '_blank');
+    }
+
+    async function checkServerStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-emerald-500";
+        document.getElementById('statusText').textContent = "Engine Ready";
+      } catch (err) {
+        document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-rose-500";
+        document.getElementById('statusText').textContent = "Offline";
+      }
+    }
+
+    async function loadLatestResults() {
+      try {
+        const res = await fetch('/api/latest-results');
+        const data = await res.json();
+        if (data.items && data.items.length) {
+          scrapedItems = data.items;
+          currentOverview = data.overview || null;
+          currentCompetitors = data.competitors || [];
+          currentJobId = data.job_id || 'latest';
+          
+          renderOverviewCard(currentOverview);
+          renderCompetitors(currentCompetitors);
+          renderQuickPreview(scrapedItems);
+          
+          document.getElementById('navRecordsBadge').textContent = scrapedItems.length;
+          document.getElementById('recordsCountBadge').textContent = `${scrapedItems.length} records`;
+          document.getElementById('quickItemBadge').textContent = `${scrapedItems.length} records`;
+          document.getElementById('btnExportJson').disabled = false;
+          document.getElementById('btnExportCsv').disabled = false;
+          const syncBtn = document.getElementById('btnSyncSupabase');
+          if (syncBtn) syncBtn.disabled = false;
+
+          const rawPayload = {
+            overview: currentOverview,
+            competitors: currentCompetitors,
+            items: scrapedItems
+          };
+          document.getElementById('resultsRawPre').textContent = JSON.stringify(rawPayload, null, 2);
+          renderResultsTable();
+        }
+      } catch (err) {}
+    }
+
+    async function checkSupabaseStatus() {
+      try {
+        const res = await fetch('/api/supabase/status');
+        const data = await res.json();
+        const dot = document.getElementById('supabaseStatusDot');
+        const notice = document.getElementById('supabaseSchemaNotice');
+        
+        if (data.connected && data.ready) {
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+          if (notice) notice.classList.add('hidden');
+        } else if (data.connected && !data.ready) {
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-500";
+          if (notice) notice.classList.remove('hidden');
+        } else {
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-rose-500";
+        }
+      } catch (err) {}
+    }
+
+    async function syncCurrentJobToSupabase() {
+      if (!currentJobId) return;
+      const btn = document.getElementById('btnSyncSupabase');
+      const text = document.getElementById('btnSyncSupabaseText');
+      btn.disabled = true;
+      text.textContent = "Syncing to Supabase...";
+
+      try {
+        const res = await fetch(`/api/supabase/sync/${currentJobId}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          text.textContent = `Synced (${data.stored_items || 0} items)`;
+          setTimeout(() => { text.textContent = "Sync to Supabase"; btn.disabled = false; }, 3000);
+        } else {
+          const errs = (data.errors || []).join('; ');
+          alert('Supabase sync note: ' + (errs || 'Tables not yet initialized. Please run the SQL schema in Supabase.'));
+          text.textContent = "Sync to Supabase";
+          btn.disabled = false;
+          viewSupabaseSchema();
+        }
+      } catch (err) {
+        alert('Supabase request failed: ' + err);
+        text.textContent = "Sync to Supabase";
+        btn.disabled = false;
+      }
+    }
+
+    async function viewSupabaseSchema() {
+      try {
+        const res = await fetch('/api/supabase/schema');
+        const sql = await res.text();
+        document.getElementById('supabaseSchemaCode').textContent = sql;
+        document.getElementById('supabaseSchemaModal').classList.remove('hidden');
+      } catch (e) {
+        alert('Failed to load SQL schema: ' + e);
+      }
+    }
+
+    function closeSupabaseSchemaModal() {
+      document.getElementById('supabaseSchemaModal').classList.add('hidden');
+    }
+
+    function copySupabaseSql() {
+      const code = document.getElementById('supabaseSchemaCode').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('btnCopySql');
+        const oldText = btn.textContent;
+        btn.textContent = "Copied to Clipboard!";
+        setTimeout(() => { btn.textContent = oldText; }, 2500);
+      });
+    }
+
+    // Initialize
+    checkServerStatus();
+    checkSupabaseStatus();
+    loadLatestResults();
+    setInterval(checkServerStatus, 5000);
+    setInterval(checkSupabaseStatus, 10000);
+  </script>
+
+  <!-- Supabase Schema SQL Setup Modal -->
+  <div id="supabaseSchemaModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zm0 5h16M9 4v16"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Supabase SQL Schema Migration</h3>
+            <p class="text-xs text-slate-500">Run this script in your Supabase SQL Editor to create tables for extractions, items, and competitors.</p>
+          </div>
+        </div>
+        <button onclick="closeSupabaseSchemaModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="p-5 flex-1 overflow-auto bg-slate-950">
+        <pre id="supabaseSchemaCode" class="text-xs font-mono text-emerald-400 whitespace-pre-wrap select-all"></pre>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <div class="text-xs text-slate-500">
+          Target Project: <code class="font-mono text-slate-700 font-bold">twwapvttxabmdvlzkuef</code>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="copySupabaseSql()" id="btnCopySql" class="px-3.5 py-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-semibold rounded-xl text-xs shadow-sm transition">
+            Copy SQL Script
+          </button>
+          <a href="https://supabase.com/dashboard/project/twwapvttxabmdvlzkuef/sql" target="_blank" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow-sm transition flex items-center space-x-1.5">
+            <span>Open Supabase SQL Editor</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </script>
+</body>
+</html>
