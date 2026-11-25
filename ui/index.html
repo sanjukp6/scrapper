@@ -73,6 +73,28 @@
               <span id="navRecordsBadge" class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">0</span>
             </button>
 
+            <!-- Tab: Knowledge Base -->
+            <button onclick="navigateToTab('knowledge')" id="nav-knowledge" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span>Knowledge Base</span>
+              </div>
+              <span id="navBrandsBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">0</span>
+            </button>
+
+            <!-- Tab: Influencer Agent -->
+            <button onclick="navigateToTab('influencer')" id="nav-influencer" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+              <div class="flex items-center space-x-2.5">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span>Influencer Agent</span>
+              </div>
+              <span id="navCampaignsBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">0</span>
+            </button>
+
             <!-- Tab: Logs -->
             <button onclick="navigateToTab('logs')" id="nav-logs" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
               <div class="flex items-center space-x-2.5">
@@ -83,64 +105,9 @@
               </div>
             </button>
 
-            <!-- Tab: Advanced Code -->
-            <button onclick="navigateToTab('advanced')" id="nav-advanced" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
-              <div class="flex items-center space-x-2.5">
-                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                </svg>
-                <span>Spider Code</span>
-              </div>
-            </button>
-
           </nav>
         </div>
-
-        <!-- Supabase Cloud Integration Card -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-1.5">
-              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3zm0 5h16M9 4v16"/>
-              </svg>
-              <span class="text-[11px] font-bold text-slate-800">Supabase Cloud DB</span>
-            </div>
-            <span id="supabaseStatusDot" class="w-2 h-2 rounded-full bg-emerald-500" title="Connected"></span>
-          </div>
-          <p class="text-[10px] text-slate-500 font-mono truncate" id="supabaseUrlText">twwapvttxabmdvlzkuef</p>
-          <div class="flex items-center space-x-2 pt-0.5">
-            <button onclick="viewSupabaseSchema()" class="text-[10px] text-blue-600 hover:underline font-medium">SQL Schema</button>
-            <span class="text-slate-300">|</span>
-            <a href="https://supabase.com/dashboard/project/twwapvttxabmdvlzkuef/sql" target="_blank" class="text-[10px] text-slate-600 hover:text-slate-900 flex items-center space-x-0.5">
-              <span>SQL Editor</span>
-              <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Reference Guide -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
-          <p class="text-[11px] font-semibold text-slate-700">Crawler Capabilities</p>
-          <ul class="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
-            <li>Single-page applications (React/Vite)</li>
-            <li>Multi-page recursive pagination</li>
-            <li>Competitor domain discovery</li>
-            <li>Zero selector configuration</li>
-          </ul>
-        </div>
       </div>
-    </div>
-
-    <!-- Engine Status Footer -->
-    <div class="p-4 border-t border-slate-200 bg-slate-50/50">
-      <div class="flex items-center justify-between text-xs">
-        <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500" id="statusDot"></span>
-          <span class="font-medium text-slate-700" id="statusText">Engine Ready</span>
-        </div>
-        <span class="text-[11px] text-slate-400 font-mono">v2.20.0</span>
-      </div>
-      <p class="text-[10px] text-slate-400 mt-1 font-mono">http://127.0.0.1:5000</p>
     </div>
   </aside>
 
@@ -160,6 +127,8 @@
           <button onclick="navigateToTab('scraper')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Dashboard</button>
           <button onclick="navigateToTab('competitors')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Competitors</button>
           <button onclick="navigateToTab('records')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Data Grid</button>
+          <button onclick="navigateToTab('knowledge')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Knowledge Base</button>
+          <button onclick="navigateToTab('influencer')" class="px-2.5 py-1 rounded font-medium text-slate-700 hover:text-slate-900">Influencer Agent</button>
         </div>
       </div>
     </header>
@@ -216,23 +185,6 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
                 </svg>
                 <span id="btnScrapeText">Start Extraction</span>
-              </button>
-            </div>
-
-            <!-- Quick Samples -->
-            <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
-              <span class="text-slate-400 text-[11px] font-medium">Quick examples:</span>
-              <button type="button" onclick="setSampleUrl('https://luma-scents.vercel.app/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
-                Luma Scents (SPA Perfume)
-              </button>
-              <button type="button" onclick="setSampleUrl('https://quotes.toscrape.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
-                Quotes to Scrape
-              </button>
-              <button type="button" onclick="setSampleUrl('https://books.toscrape.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
-                Books to Scrape (Multi-Page)
-              </button>
-              <button type="button" onclick="setSampleUrl('https://news.ycombinator.com/')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 transition text-[11px]">
-                Hacker News
               </button>
             </div>
           </form>
@@ -555,53 +507,338 @@
         </div>
       </section>
 
-      <!-- ================= SECTION 5: ADVANCED SPIDER CODE ================= -->
-      <section id="section-advanced" class="space-y-6 hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5">
-          <div>
-            <h3 class="text-base font-bold text-slate-900">Custom Python Spider Runner</h3>
-            <p class="text-xs text-slate-500">Run existing repository spider files or execute inline Scrapy Python classes directly against your target URLs.</p>
-          </div>
-
-          <div class="flex space-x-2 border-b border-slate-200 pb-2">
-            <button onclick="switchCodeTab('existing')" id="tabBtn-existing" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700">Repository Spider Files</button>
-            <button onclick="switchCodeTab('code')" id="tabBtn-code" class="px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900">Custom Spider Code</button>
-          </div>
-
-          <!-- Existing files -->
-          <div id="codeTab-existing" class="space-y-3">
-            <div class="flex flex-col sm:flex-row gap-2">
-              <select id="spiderFileSelect" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono">
-                <option value="universal_extractor.py">universal_extractor.py (Universal Extractor + Competitors)</option>
-                <option value="luma_spider.py">luma_spider.py</option>
-                <option value="sample_spider.py">sample_spider.py</option>
-              </select>
-              <button onclick="runExistingSpider()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm transition">
-                Run Selected Spider
-              </button>
+      <!-- ================= SECTION 5: KNOWLEDGE BASE TAB ================= -->
+      <section id="section-knowledge" class="space-y-6 hidden">
+        
+        <!-- Toolbar -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2.5">
+              <h3 class="text-sm font-bold text-slate-900">Collective Brand Knowledge Base</h3>
+              <span id="kbBrandsCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold">0 Brands</span>
             </div>
+            <p class="text-xs text-slate-500">Unified, deduplicated per-brand dossiers and event payloads stored in Supabase.</p>
           </div>
 
-          <!-- Custom Python Code -->
-          <div id="codeTab-code" class="space-y-3 hidden">
-            <textarea id="customSpiderCode" rows="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-200 resize-none">import scrapy
-
-class CustomSpider(scrapy.Spider):
-    name = "custom"
-    start_urls = ["https://quotes.toscrape.com/"]
-
-    def parse(self, response):
-        for q in response.css("div.quote"):
-            yield {
-                "text": q.css("span.text::text").get(),
-                "author": q.css("small.author::text").get(),
-            }
-</textarea>
-            <button onclick="runCustomCode()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm transition">
-              Execute Python Code
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200 text-xs">
+              <button onclick="switchKbView('brands')" id="kbSubBtn-brands" class="px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm">Brand Dossiers</button>
+              <button onclick="switchKbView('events')" id="kbSubBtn-events" class="px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium">Event Feed</button>
+            </div>
+            <button onclick="backfillBrandKnowledge()" id="btnBackfillKb" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm transition">
+              Sync Past Crawls
+            </button>
+            <button onclick="refreshKnowledgeBase()" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm transition">
+              Refresh
             </button>
           </div>
         </div>
+
+        <!-- Schema Setup Alert if tables missing -->
+        <div id="kbSchemaNotice" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs text-amber-900 hidden">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span>Brand Knowledge tables (<code>brands</code>, <code>brand_items</code>, <code>brand_competitors</code>, <code>brand_events</code>) are not yet initialized in Supabase.</span>
+          </div>
+          <button onclick="viewSupabaseSchema()" class="px-3 py-1.5 rounded-lg bg-white border border-amber-300 font-semibold text-amber-800 hover:bg-amber-100 shadow-sm">
+            View SQL Migration
+          </button>
+        </div>
+
+        <!-- Subview 1: Brand Dossiers -->
+        <div id="kbView-brands" class="space-y-6">
+          <div class="flex items-center justify-between">
+            <div class="relative w-80">
+              <input type="text" id="kbSearchInput" oninput="filterBrandCards()" placeholder="Filter brands by name, domain, or niche..." class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+          </div>
+
+          <div id="kbBrandsEmpty" class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-2 shadow-sm hidden">
+            <h4 class="text-sm font-bold text-slate-800">No Collective Brand Profiles Yet</h4>
+            <p class="text-xs text-slate-500 max-w-md mx-auto">Run an extraction on any brand URL (or click Sync Past Crawls after applying schema_supabase.sql) to build your collective brand knowledge base.</p>
+          </div>
+
+          <div id="kbBrandsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Brand cards injected dynamically -->
+          </div>
+
+          <!-- Selected Brand Dossier Detail Panel -->
+          <div id="kbDossierPanel" class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden hidden">
+            <div class="p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center space-x-3">
+                <img id="dossierFavicon" src="" alt="" class="w-8 h-8 rounded-lg bg-white p-1 border border-slate-200 object-contain" onerror="this.style.display='none'">
+                <div>
+                  <h4 id="dossierBrandName" class="text-base font-bold text-slate-900">Brand Name</h4>
+                  <a id="dossierDomainLink" href="#" target="_blank" class="text-xs text-blue-600 hover:underline font-mono">domain.com</a>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="copyDossierBrief()" id="btnCopyDossier" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm">Copy Brief</button>
+                <button onclick="exportBrandDossier('md')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm">Export Markdown</button>
+                <button onclick="exportBrandDossier('json')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm">Export Event JSON</button>
+                <button onclick="closeDossierPanel()" class="px-2.5 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-800">Close</button>
+              </div>
+            </div>
+
+            <div class="p-6 space-y-6">
+              <!-- Event Brief Callout -->
+              <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-4 space-y-1.5">
+                <p class="text-[11px] font-bold uppercase tracking-wider text-blue-700">Event-Ready Brand Brief</p>
+                <p id="dossierEventBrief" class="text-xs text-slate-800 leading-relaxed"></p>
+              </div>
+
+              <!-- Key Metrics & Contacts -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1.5">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase">Catalog & Pricing</p>
+                  <p id="dossierCatalogStats" class="font-bold text-slate-900"></p>
+                  <p id="dossierCategories" class="text-slate-600"></p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1.5">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase">Outreach Contacts</p>
+                  <div id="dossierContacts" class="space-y-1 text-slate-700"></div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1.5">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase">Linked Competitors</p>
+                  <div id="dossierCompetitorsList" class="space-y-1 text-slate-700"></div>
+                </div>
+              </div>
+
+              <!-- 5 Brand & Strategy .txt Documents (Stored in Supabase) -->
+              <div class="border border-slate-200 rounded-xl p-4 space-y-3 bg-slate-50/60">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p class="text-xs font-bold text-slate-900">5 Strategy & Brand Documents (.txt in Supabase)</p>
+                    <p class="text-[11px] text-slate-500">Generated from scraped items, copy, competitors, and GSC/GA tables.</p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button onclick="regenerateBrandDocs()" id="btnRegenDocs" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm">Regenerate 5 Docs</button>
+                    <button onclick="copySelectedTxtDoc()" id="btnCopyTxtDoc" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm">Copy .txt</button>
+                    <button onclick="downloadSelectedTxtDoc()" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white shadow-sm">Download .txt</button>
+                  </div>
+                </div>
+
+                <!-- 5 Document Selector Tabs -->
+                <div id="dossierDocTabs" class="flex flex-wrap gap-2">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Selected Document Meta + Gaps -->
+                <div id="dossierDocMeta" class="text-[11px] text-slate-600 bg-white border border-slate-200 rounded-lg px-3 py-2 hidden"></div>
+
+                <!-- Plain-Text Document Viewer -->
+                <pre id="dossierDocTxtPre" class="p-4 bg-slate-900 text-slate-100 font-mono text-xs rounded-xl max-h-96 overflow-auto whitespace-pre-wrap"></pre>
+              </div>
+
+              <!-- Collective Knowledge Preview Switcher -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <p class="text-xs font-bold text-slate-800">Collective Knowledge Payload</p>
+                  <div class="flex items-center space-x-1 bg-slate-100 rounded-lg p-1 border border-slate-200 text-xs">
+                    <button onclick="switchDossierFormat('md')" id="dossierFmt-md" class="px-2.5 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm">Markdown</button>
+                    <button onclick="switchDossierFormat('json')" id="dossierFmt-json" class="px-2.5 py-1 rounded text-slate-600 font-medium">Event JSON</button>
+                  </div>
+                </div>
+                <pre id="dossierPayloadPre" class="p-4 bg-slate-900 text-slate-200 font-mono text-xs rounded-xl max-h-96 overflow-auto whitespace-pre-wrap"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subview 2: Brand Events Feed -->
+        <div id="kbView-events" class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden hidden">
+          <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-800">Emitted Brand Events (for Downstream Event Consumers)</h4>
+            <span id="kbEventsCountBadge" class="text-[11px] text-slate-500 font-mono">0 events</span>
+          </div>
+          <div id="kbEventsList" class="divide-y divide-slate-100 max-h-[540px] overflow-auto">
+            <div class="p-8 text-center text-xs text-slate-400 italic">No brand events recorded yet.</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION 6: INFLUENCER AGENT TAB ================= -->
+      <section id="section-influencer" class="space-y-6 hidden">
+        
+        <!-- Header + Subview Switcher -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2.5">
+              <h3 class="text-sm font-bold text-slate-900">Influencer Campaign Agent</h3>
+              <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold">Powered by 5-Doc Knowledge Base</span>
+            </div>
+            <p class="text-xs text-slate-500">End-to-end X &amp; LinkedIn campaign orchestration: KB brief synthesis, 5-factor creator matching, escrow funding, 48h outreach, submission review &amp; payouts.</p>
+          </div>
+          <div class="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200 text-xs">
+            <button onclick="switchInfSubView('feed')" id="infSubBtn-feed" class="px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm">Campaigns &amp; Agents Feed</button>
+            <button onclick="switchInfSubView('creators')" id="infSubBtn-creators" class="px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium">Creator Pool &amp; Onboarding</button>
+          </div>
+        </div>
+
+        <!-- SUBVIEW A: CHAT BRIEF BUILDER + AGENTS FEED -->
+        <div id="infView-feed" class="space-y-6">
+          
+          <!-- CMO Chat Brief Launcher -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Launch Campaign From Brand Knowledge Base</h4>
+                <p class="text-[11px] text-slate-500">Select a scraped brand from Supabase and describe your goal, budget, platforms, and timeline.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <label class="text-xs font-medium text-slate-600">Target Brand:</label>
+                <select id="infBrandSelect" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-mono">
+                  <option value="">Loading brands...</option>
+                </select>
+                <button type="button" id="btnDiscoverFeed" onclick="handleDiscoverCreators('feed')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition cursor-pointer">
+                  Discover Live Creators
+                </button>
+              </div>
+            </div>
+
+            <div id="infDiscoverBanner" class="hidden rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-700"></div>
+
+            <form onsubmit="handleCreateInfluencerCampaign(event)" class="space-y-3">
+              <textarea id="infPromptInput" rows="2" placeholder="Example: I want to launch on X, LinkedIn, and YouTube with 5 creators. Budget is $5k, two-week timeline, product-focused tone." class="w-full bg-slate-50/50 border border-slate-300 focus:border-blue-600 focus:bg-white rounded-xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100">I want to launch on X, LinkedIn, and YouTube with 4 creators. Budget is $2500, two-week timeline, product-focused tone.</textarea>
+              <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="flex flex-wrap items-center gap-3">
+                  <label class="flex items-center space-x-1.5 text-slate-700 font-medium">
+                    <input type="checkbox" id="infPlatX" checked class="rounded border-slate-300 text-blue-600">
+                    <span>Twitter / X</span>
+                  </label>
+                  <select id="infDelivX" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-700">
+                    <option value="thread">Thread</option>
+                    <option value="tweet">Tweet</option>
+                    <option value="quote_tweet">Quote Tweet</option>
+                    <option value="retweet">Retweet</option>
+                  </select>
+                  <label class="flex items-center space-x-1.5 text-slate-700 font-medium ml-1">
+                    <input type="checkbox" id="infPlatLi" checked class="rounded border-slate-300 text-blue-600">
+                    <span>LinkedIn</span>
+                  </label>
+                  <select id="infDelivLi" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-700">
+                    <option value="carousel">Carousel / Document</option>
+                    <option value="post">Standalone Post</option>
+                    <option value="repost">Repost w/ Commentary</option>
+                    <option value="video">Native Video</option>
+                  </select>
+                  <label class="flex items-center space-x-1.5 text-slate-700 font-medium ml-1">
+                    <input type="checkbox" id="infPlatYt" checked class="rounded border-slate-300 text-blue-600">
+                    <span>YouTube</span>
+                  </label>
+                  <select id="infDelivYt" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-700">
+                    <option value="review_video">Review Video</option>
+                    <option value="short">YouTube Short</option>
+                    <option value="mention">Channel Mention</option>
+                  </select>
+                  <label class="flex items-center space-x-1.5 text-slate-700 font-medium ml-1">
+                    <input type="checkbox" id="infPlatIg" class="rounded border-slate-300 text-blue-600">
+                    <span>Instagram</span>
+                  </label>
+                  <select id="infDelivIg" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-700">
+                    <option value="reel">Reel</option>
+                    <option value="story">Story</option>
+                    <option value="post">Feed Post</option>
+                  </select>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <label class="flex items-center space-x-1.5 text-slate-600">
+                    <input type="checkbox" id="infAutoDiscover" checked class="rounded border-slate-300 text-blue-600">
+                    <span>Live-scrape creators</span>
+                  </label>
+                  <button type="submit" id="btnCreateCampaign" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition cursor-pointer">
+                    Generate Brief &amp; Match Creators
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Agents Feed List -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Agents Feed — Active Campaigns</h4>
+              <button onclick="loadInfluencerCampaigns()" class="text-xs text-blue-600 hover:underline font-medium">Refresh Feed</button>
+            </div>
+            <div id="infCampaignsEmpty" class="bg-white border border-slate-200 rounded-2xl p-10 text-center text-xs text-slate-400 italic shadow-sm hidden">
+              No influencer campaigns created yet. Describe your campaign above to generate a KB-backed brief and shortlist.
+            </div>
+            <div id="infCampaignsList" class="space-y-4">
+              <!-- Campaign cards injected dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SUBVIEW B: CREATOR POOL & /creator/new ONBOARDING -->
+        <div id="infView-creators" class="space-y-6 hidden">
+          
+          <!-- Creator Onboarding Form (/creator/new) -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900">Creator Onboarding Portal (/creator/new)</h4>
+              <p class="text-xs text-slate-500">Creators join with zero fees. New applications enter pending review for admin approval.</p>
+            </div>
+            <form onsubmit="handleRegisterCreator(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <input type="text" id="crName" placeholder="Creator Full Name" required class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+              <input type="text" id="crHandle" placeholder="Handle (e.g. @handle or in/slug)" required class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-mono">
+              <select id="crPlatform" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800">
+                <option value="twitter_x">Twitter / X</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="youtube">YouTube</option>
+                <option value="instagram">Instagram</option>
+              </select>
+              <input type="text" id="crVerticals" placeholder="Verticals (e.g. perfume, footwear, lifestyle)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+              <input type="text" id="crTones" placeholder="Tone Tags (e.g. artisanal, value-driven)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+              <div class="flex gap-2">
+                <input type="number" id="crFollowers" placeholder="Followers" value="25000" class="w-1/2 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+                <input type="number" id="crRate" placeholder="Min Rate ($)" value="350" class="w-1/2 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+              </div>
+              <input type="text" id="crBio" placeholder="Short creator bio / niche focus..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900">
+              <input type="url" id="crProfileUrl" placeholder="Profile URL (https://x.com/... or https://linkedin.com/in/...)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-mono">
+              <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm cursor-pointer">
+                Submit Creator Application
+              </button>
+            </form>
+          </div>
+
+          <!-- Active Creator Pool Table -->
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h4 class="text-xs font-bold text-slate-800">Vetted Creator Network</h4>
+                <span id="infCreatorsCountBadge" class="text-[11px] font-mono text-slate-500">0 creators</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <input type="text" id="infPoolDiscoverQuery" placeholder="Optional niche keywords (e.g. niche perfume, sandals review)" class="w-64 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-800">
+                <button type="button" id="btnDiscoverPool" onclick="handleDiscoverCreators('pool')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold cursor-pointer">
+                  Discover Live Creators
+                </button>
+              </div>
+            </div>
+            <div id="infPoolDiscoverBanner" class="hidden border-b border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-700"></div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold">
+                  <tr>
+                    <th class="p-3">Creator</th>
+                    <th class="p-3">Platform</th>
+                    <th class="p-3">Verticals &amp; Tone</th>
+                    <th class="p-3">Reach</th>
+                    <th class="p-3">Min Rate</th>
+                    <th class="p-3">Reliability</th>
+                    <th class="p-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="infCreatorsBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
       </section>
 
     </main>
@@ -615,18 +852,22 @@ class CustomSpider(scrapy.Spider):
     let currentCompetitors = [];
     let currentView = 'table';
     let activeTab = 'scraper';
+    let cachedBrands = [];
+    let selectedDossier = null;
+    let selectedDossierFormat = 'md';
 
     const tabTitles = {
       scraper: { breadcrumb: 'Workspace', title: 'Universal Scraper' },
       competitors: { breadcrumb: 'Analysis', title: 'Competitor Intelligence' },
       records: { breadcrumb: 'Data', title: 'Extracted Records' },
-      logs: { breadcrumb: 'System', title: 'Execution Logs' },
-      advanced: { breadcrumb: 'Developer', title: 'Spider Code Runner' }
+      knowledge: { breadcrumb: 'Knowledge', title: 'Collective Brand Knowledge Base' },
+      influencer: { breadcrumb: 'Channels', title: 'Influencer Agent' },
+      logs: { breadcrumb: 'System', title: 'Execution Logs' }
     };
 
     function navigateToTab(tabId) {
       activeTab = tabId;
-      const tabs = ['scraper', 'competitors', 'records', 'logs', 'advanced'];
+      const tabs = ['scraper', 'competitors', 'records', 'knowledge', 'influencer', 'logs'];
       tabs.forEach(t => {
         const section = document.getElementById(`section-${t}`);
         const navBtn = document.getElementById(`nav-${t}`);
@@ -645,6 +886,8 @@ class CustomSpider(scrapy.Spider):
       document.getElementById('currentSectionTitle').textContent = meta.title;
 
       if (tabId === 'records') renderResultsTable();
+      if (tabId === 'knowledge') refreshKnowledgeBase();
+      if (tabId === 'influencer') initInfluencerTab();
     }
 
     function setSampleUrl(url) {
@@ -1087,60 +1330,9 @@ class CustomSpider(scrapy.Spider):
       }
     }
 
-    function switchCodeTab(t) {
-      document.getElementById('codeTab-existing').classList.toggle('hidden', t !== 'existing');
-      document.getElementById('codeTab-code').classList.toggle('hidden', t !== 'code');
-      document.getElementById('tabBtn-existing').className = t === 'existing' ? "px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700" : "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900";
-      document.getElementById('tabBtn-code').className = t === 'code' ? "px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700" : "px-3 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:text-slate-900";
-    }
-
-    async function runExistingSpider() {
-      const fileName = document.getElementById('spiderFileSelect').value;
-      clearLogs();
-      navigateToTab('logs');
-      appendLog(`[*] Running spider file: ${fileName}...`);
-      try {
-        const res = await fetch('/api/scrape/file', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ file_name: fileName })
-        });
-        const data = await res.json();
-        if (data.job_id) listenToStream(data.job_id);
-      } catch (err) { alert('Error: ' + err); }
-    }
-
-    async function runCustomCode() {
-      const code = document.getElementById('customSpiderCode').value;
-      clearLogs();
-      navigateToTab('logs');
-      appendLog(`[*] Executing custom Python spider...`);
-      try {
-        const res = await fetch('/api/scrape/code', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code })
-        });
-        const data = await res.json();
-        if (data.job_id) listenToStream(data.job_id);
-      } catch (err) { alert('Error: ' + err); }
-    }
-
     function exportData(format) {
       if (!currentJobId) return;
       window.open(`/api/jobs/${currentJobId}/export?format=${format}`, '_blank');
-    }
-
-    async function checkServerStatus() {
-      try {
-        const res = await fetch('/api/status');
-        const data = await res.json();
-        document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-emerald-500";
-        document.getElementById('statusText').textContent = "Engine Ready";
-      } catch (err) {
-        document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-rose-500";
-        document.getElementById('statusText').textContent = "Offline";
-      }
     }
 
     async function loadLatestResults() {
@@ -1182,13 +1374,16 @@ class CustomSpider(scrapy.Spider):
         const data = await res.json();
         const dot = document.getElementById('supabaseStatusDot');
         const notice = document.getElementById('supabaseSchemaNotice');
+        const kbNotice = document.getElementById('kbSchemaNotice');
         
         if (data.connected && data.ready) {
           if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-500";
           if (notice) notice.classList.add('hidden');
+          if (kbNotice) kbNotice.classList.add('hidden');
         } else if (data.connected && !data.ready) {
           if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-500";
           if (notice) notice.classList.remove('hidden');
+          if (kbNotice) kbNotice.classList.remove('hidden');
         } else {
           if (dot) dot.className = "w-2 h-2 rounded-full bg-rose-500";
         }
@@ -1247,11 +1442,688 @@ class CustomSpider(scrapy.Spider):
       });
     }
 
+    // ================= KNOWLEDGE BASE LOGIC =================
+    function switchKbView(view) {
+      document.getElementById('kbView-brands').classList.toggle('hidden', view !== 'brands');
+      document.getElementById('kbView-events').classList.toggle('hidden', view !== 'events');
+      document.getElementById('kbSubBtn-brands').className = view === 'brands'
+        ? "px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium";
+      document.getElementById('kbSubBtn-events').className = view === 'events'
+        ? "px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium";
+      if (view === 'events') loadBrandEventsFeed();
+    }
+
+    async function refreshKnowledgeBase() {
+      await Promise.all([loadBrandKnowledgeList(), loadBrandEventsFeed()]);
+    }
+
+    async function loadBrandKnowledgeList() {
+      try {
+        const res = await fetch('/api/brands');
+        const data = await res.json();
+        cachedBrands = data.brands || [];
+        const navBadge = document.getElementById('navBrandsBadge');
+        if (cachedBrands.length > 0) {
+          navBadge.classList.remove('hidden');
+          navBadge.textContent = cachedBrands.length;
+        } else {
+          navBadge.classList.add('hidden');
+        }
+        document.getElementById('kbBrandsCountBadge').textContent = `${cachedBrands.length} Brand${cachedBrands.length === 1 ? '' : 's'}`;
+        populateInfluencerBrandSelect(cachedBrands);
+        filterBrandCards();
+      } catch (e) {
+        console.error('Failed to load brands', e);
+      }
+    }
+
+    function filterBrandCards() {
+      const q = (document.getElementById('kbSearchInput')?.value || '').toLowerCase();
+      const filtered = cachedBrands.filter(b => {
+        if (!q) return true;
+        return JSON.stringify(b).toLowerCase().includes(q);
+      });
+      const emptyEl = document.getElementById('kbBrandsEmpty');
+      const gridEl = document.getElementById('kbBrandsGrid');
+      if (!filtered.length) {
+        emptyEl.classList.remove('hidden');
+        gridEl.innerHTML = '';
+        return;
+      }
+      emptyEl.classList.add('hidden');
+      gridEl.innerHTML = filtered.map(b => {
+        const compCount = (b.competitors_summary || []).length;
+        const ps = b.price_summary || {};
+        const priceTxt = (ps.min !== null && ps.min !== undefined)
+          ? `${ps.currency || ''} ${ps.min} - ${ps.max}`.trim()
+          : 'No pricing';
+        return `
+          <div class="bg-white border border-slate-200 hover:border-blue-400 rounded-xl p-5 flex flex-col justify-between space-y-4 transition shadow-sm hover:shadow-md">
+            <div class="space-y-2">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center space-x-2.5 overflow-hidden">
+                  ${b.favicon ? `<img src="${b.favicon}" alt="" class="w-6 h-6 rounded border border-slate-200 object-contain flex-shrink-0" onerror="this.style.display='none'">` : ''}
+                  <div class="truncate">
+                    <h4 class="font-bold text-slate-900 text-sm truncate">${b.brand_name || b.domain}</h4>
+                    <p class="text-[11px] font-mono text-blue-600 truncate">${b.domain}</p>
+                  </div>
+                </div>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium whitespace-nowrap">${b.crawl_count || 1} crawl(s)</span>
+              </div>
+              ${b.description ? `<p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${b.description}</p>` : ''}
+              <div class="flex flex-wrap gap-1.5 pt-1 text-[10px] font-medium">
+                <span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">${b.total_items || 0} items</span>
+                <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700">${compCount} competitors</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">${priceTxt}</span>
+              </div>
+            </div>
+            <button onclick="openBrandDossier('${b.domain}')" class="w-full py-2 px-3 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-200 text-xs font-semibold transition cursor-pointer">
+              Open Brand Dossier
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function openBrandDossier(domain) {
+      try {
+        const res = await fetch(`/api/brands/${encodeURIComponent(domain)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        selectedDossier = data;
+        const brand = data.brand || {};
+        const ck = brand.collective_knowledge || {};
+        const ps = brand.price_summary || {};
+
+        document.getElementById('kbDossierPanel').classList.remove('hidden');
+        document.getElementById('dossierBrandName').textContent = brand.brand_name || brand.domain;
+        document.getElementById('dossierDomainLink').textContent = brand.domain;
+        document.getElementById('dossierDomainLink').href = brand.primary_url || `https://${brand.domain}`;
+        const fav = document.getElementById('dossierFavicon');
+        if (brand.favicon) { fav.src = brand.favicon; fav.style.display = 'block'; } else { fav.style.display = 'none'; }
+
+        document.getElementById('dossierEventBrief').textContent = ck.event_brief || brand.description || 'No brief generated.';
+
+        const priceLine = (ps.min !== null && ps.min !== undefined)
+          ? `${brand.total_items || 0} items (${ps.currency || ''} ${ps.min} - ${ps.max}, avg ${ps.avg})`
+          : `${brand.total_items || 0} items`;
+        document.getElementById('dossierCatalogStats').textContent = priceLine;
+        const cats = (ps.categories || []).map(c => `${c.name} (${c.count})`).join(', ');
+        document.getElementById('dossierCategories').textContent = cats || 'Uncategorized';
+
+        const contactsEl = document.getElementById('dossierContacts');
+        const emails = brand.emails || [];
+        const socials = brand.social_links || {};
+        const contactParts = [];
+        emails.forEach(e => contactParts.push(`<div class="font-mono truncate">${e}</div>`));
+        Object.entries(socials).forEach(([k, v]) => contactParts.push(`<div class="truncate"><span class="capitalize font-medium">${k}:</span> <a href="${v}" target="_blank" class="text-blue-600 hover:underline">${v}</a></div>`));
+        contactsEl.innerHTML = contactParts.length ? contactParts.join('') : '<span class="text-slate-400 italic">None recorded</span>';
+
+        const comps = data.competitors || [];
+        document.getElementById('dossierCompetitorsList').innerHTML = comps.length
+          ? comps.slice(0, 5).map(c => `<div class="truncate"><a href="${c.url}" target="_blank" class="text-blue-600 hover:underline">${c.name || c.competitor_domain}</a></div>`).join('')
+          : '<span class="text-slate-400 italic">None recorded</span>';
+
+        renderDossierDocuments(data.documents || []);
+        switchDossierFormat(selectedDossierFormat);
+        document.getElementById('kbDossierPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        console.error('Failed to open dossier', e);
+      }
+    }
+
+    let selectedDocKey = 'product_info';
+
+    function renderDossierDocuments(docs) {
+      const tabsEl = document.getElementById('dossierDocTabs');
+      const preEl = document.getElementById('dossierDocTxtPre');
+      const metaEl = document.getElementById('dossierDocMeta');
+      if (!docs || !docs.length) {
+        tabsEl.innerHTML = '<span class="text-xs text-slate-400 italic">Click "Regenerate 5 Docs" to generate the 5 .txt documents in Supabase.</span>';
+        preEl.textContent = 'No .txt documents generated yet for this brand.';
+        metaEl.classList.add('hidden');
+        return;
+      }
+
+      const activeDoc = docs.find(d => d.doc_key === selectedDocKey) || docs[0];
+      selectedDocKey = activeDoc.doc_key || (activeDoc.filename || '').replace('.txt', '');
+
+      const statusStyles = {
+        ready: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        partial: 'bg-amber-50 text-amber-800 border-amber-200',
+        mock: 'bg-sky-50 text-sky-700 border-sky-200',
+        blocked: 'bg-rose-50 text-rose-700 border-rose-200'
+      };
+
+      tabsEl.innerHTML = docs.map(d => {
+        const key = d.doc_key || (d.filename || '').replace('.txt', '');
+        const isSel = key === selectedDocKey;
+        const st = (d.status || 'partial').toLowerCase();
+        const badgeCls = statusStyles[st] || 'bg-slate-100 text-slate-700 border-slate-200';
+        return `
+          <button onclick="selectDossierDoc('${key}')" class="px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center space-x-2 transition ${isSel ? 'bg-blue-50 border-blue-400 text-blue-800 font-semibold shadow-sm' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">
+            <span class="font-mono">${d.filename || (key + '.txt')}</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded border uppercase font-semibold ${badgeCls}">${st}</span>
+          </button>
+        `;
+      }).join('');
+
+      preEl.textContent = activeDoc.content_txt || '';
+      const gaps = activeDoc.gaps || [];
+      metaEl.classList.remove('hidden');
+      metaEl.innerHTML = `<strong>Sources:</strong> ${(activeDoc.data_sources || []).join(', ') || 'None'}`
+        + (gaps.length ? ` &nbsp;|&nbsp; <strong>Gaps:</strong> ${gaps.join(' ; ')}` : ' &nbsp;|&nbsp; <strong>Gaps:</strong> None');
+    }
+
+    function selectDossierDoc(docKey) {
+      selectedDocKey = docKey;
+      if (selectedDossier) {
+        renderDossierDocuments(selectedDossier.documents || []);
+      }
+    }
+
+    async function regenerateBrandDocs() {
+      if (!selectedDossier || !selectedDossier.brand) return;
+      const domain = selectedDossier.brand.domain;
+      const btn = document.getElementById('btnRegenDocs');
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+      try {
+        const res = await fetch(`/api/brands/${encodeURIComponent(domain)}/documents/generate`, { method: 'POST' });
+        const data = await res.json();
+        if (data.documents) {
+          selectedDossier.documents = data.documents;
+          renderDossierDocuments(data.documents);
+        }
+        btn.textContent = 'Regenerate 5 Docs';
+      } catch (e) {
+        btn.textContent = 'Regenerate 5 Docs';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function copySelectedTxtDoc() {
+      const content = document.getElementById('dossierDocTxtPre').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        const btn = document.getElementById('btnCopyTxtDoc');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy .txt'; }, 2000);
+      });
+    }
+
+    function downloadSelectedTxtDoc() {
+      if (!selectedDossier || !selectedDossier.brand) return;
+      const domain = selectedDossier.brand.domain;
+      window.open(`/api/brands/${encodeURIComponent(domain)}/documents/${encodeURIComponent(selectedDocKey)}.txt`, '_blank');
+    }
+
+    function switchDossierFormat(fmt) {
+      selectedDossierFormat = fmt;
+      if (!selectedDossier) return;
+      const brand = selectedDossier.brand || {};
+      const pre = document.getElementById('dossierPayloadPre');
+      document.getElementById('dossierFmt-md').className = fmt === 'md'
+        ? "px-2.5 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-2.5 py-1 rounded text-slate-600 font-medium";
+      document.getElementById('dossierFmt-json').className = fmt === 'json'
+        ? "px-2.5 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-2.5 py-1 rounded text-slate-600 font-medium";
+
+      if (fmt === 'md') {
+        pre.textContent = brand.knowledge_markdown || '';
+      } else {
+        pre.textContent = JSON.stringify(brand.collective_knowledge || {}, null, 2);
+      }
+    }
+
+    function closeDossierPanel() {
+      document.getElementById('kbDossierPanel').classList.add('hidden');
+    }
+
+    function copyDossierBrief() {
+      const content = document.getElementById('dossierPayloadPre').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        const btn = document.getElementById('btnCopyDossier');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Brief'; }, 2000);
+      });
+    }
+
+    function exportBrandDossier(fmt) {
+      if (!selectedDossier || !selectedDossier.brand) return;
+      const domain = selectedDossier.brand.domain;
+      window.open(`/api/brands/${encodeURIComponent(domain)}/export?format=${fmt}`, '_blank');
+    }
+
+    async function loadBrandEventsFeed() {
+      try {
+        const res = await fetch('/api/events');
+        const data = await res.json();
+        const events = data.events || [];
+        document.getElementById('kbEventsCountBadge').textContent = `${events.length} event(s)`;
+        const listEl = document.getElementById('kbEventsList');
+        if (!events.length) {
+          listEl.innerHTML = '<div class="p-8 text-center text-xs text-slate-400 italic">No brand events recorded yet.</div>';
+          return;
+        }
+        listEl.innerHTML = events.map(ev => `
+          <div class="p-4 space-y-2 hover:bg-slate-50 transition text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center space-x-2">
+                <span class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-mono text-[10px] font-semibold">${ev.event_type}</span>
+                <span class="font-bold text-slate-900">${ev.brand_domain}</span>
+                ${ev.extraction_id ? `<span class="text-[11px] font-mono text-slate-400">job: ${ev.extraction_id}</span>` : ''}
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">${ev.created_at || ''}</span>
+            </div>
+            <p class="text-slate-600">${(ev.payload && ev.payload.event_brief) ? ev.payload.event_brief : ''}</p>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('Failed to load brand events', e);
+      }
+    }
+
+    async function backfillBrandKnowledge() {
+      const btn = document.getElementById('btnBackfillKb');
+      btn.disabled = true;
+      btn.textContent = 'Syncing...';
+      try {
+        const res = await fetch('/api/brands/backfill', { method: 'POST' });
+        const data = await res.json();
+        btn.textContent = `Synced (${(data.brands_updated || []).length} brands)`;
+        await refreshKnowledgeBase();
+        setTimeout(() => { btn.textContent = 'Sync Past Crawls'; btn.disabled = false; }, 3000);
+      } catch (e) {
+        btn.textContent = 'Sync Past Crawls';
+        btn.disabled = false;
+      }
+    }
+
+    // ================= INFLUENCER AGENT LOGIC =================
+    let cachedCampaigns = [];
+
+    function switchInfSubView(view) {
+      document.getElementById('infView-feed').classList.toggle('hidden', view !== 'feed');
+      document.getElementById('infView-creators').classList.toggle('hidden', view !== 'creators');
+      document.getElementById('infSubBtn-feed').className = view === 'feed'
+        ? "px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium";
+      document.getElementById('infSubBtn-creators').className = view === 'creators'
+        ? "px-3 py-1 rounded bg-white text-blue-700 font-semibold shadow-sm"
+        : "px-3 py-1 rounded text-slate-600 hover:text-slate-900 font-medium";
+      if (view === 'creators') loadInfluencerCreators();
+      else loadInfluencerCampaigns();
+    }
+
+    function populateInfluencerBrandSelect(brands) {
+      const sel = document.getElementById('infBrandSelect');
+      if (!sel) return;
+      if (!brands || !brands.length) {
+        sel.innerHTML = '<option value="">No brands in KB yet</option>';
+        return;
+      }
+      const prev = sel.value;
+      sel.innerHTML = brands.map(b => `<option value="${b.domain}">${b.brand_name || b.domain} (${b.domain})</option>`).join('');
+      if (prev && brands.some(b => b.domain === prev)) sel.value = prev;
+    }
+
+    async function initInfluencerTab() {
+      if (!cachedBrands.length) await loadBrandKnowledgeList();
+      else populateInfluencerBrandSelect(cachedBrands);
+      await Promise.all([loadInfluencerCampaigns(), loadInfluencerCreators()]);
+    }
+
+    function getSelectedInfPlatforms() {
+      const platforms = [];
+      const deliverables = {};
+      if (document.getElementById('infPlatX')?.checked) {
+        platforms.push('twitter_x');
+        deliverables['twitter_x'] = document.getElementById('infDelivX').value;
+      }
+      if (document.getElementById('infPlatLi')?.checked) {
+        platforms.push('linkedin');
+        deliverables['linkedin'] = document.getElementById('infDelivLi').value;
+      }
+      if (document.getElementById('infPlatYt')?.checked) {
+        platforms.push('youtube');
+        deliverables['youtube'] = document.getElementById('infDelivYt').value;
+      }
+      if (document.getElementById('infPlatIg')?.checked) {
+        platforms.push('instagram');
+        deliverables['instagram'] = document.getElementById('infDelivIg').value;
+      }
+      return { platforms, deliverables };
+    }
+
+    async function handleDiscoverCreators(origin = 'feed') {
+      const brand_domain = document.getElementById('infBrandSelect')?.value || '';
+      const query = origin === 'pool' ? (document.getElementById('infPoolDiscoverQuery')?.value.trim() || '') : '';
+      if (!brand_domain && !query) {
+        alert('Select a Target Brand or enter niche keywords first.');
+        return;
+      }
+      const { platforms } = getSelectedInfPlatforms();
+      const btn = document.getElementById(origin === 'pool' ? 'btnDiscoverPool' : 'btnDiscoverFeed');
+      const banner = document.getElementById(origin === 'pool' ? 'infPoolDiscoverBanner' : 'infDiscoverBanner');
+      const origLabel = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Scraping Live Profiles...';
+      banner.classList.remove('hidden');
+      banner.textContent = `Scraping live public creator profiles for ${query || brand_domain}...`;
+      try {
+        const res = await fetch('/api/influencer/discover', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_domain, query, platforms })
+        });
+        const data = await res.json();
+        if (data.error) {
+          banner.textContent = `Discovery error: ${data.error}`;
+          return;
+        }
+        const srcSummary = (data.sources || []).map(s => `${s.source}: ${s.found} (${s.status})`).join(' | ');
+        const phrase = (data.context && data.context.search_phrase) || query || brand_domain;
+        banner.innerHTML = `<span class="font-semibold text-slate-900">Scraped ${data.count} real creator profile(s)</span> for <span class="font-mono text-blue-700">"${phrase}"</span> &mdash; <span class="font-mono text-[11px] text-slate-500">${srcSummary}</span>`;
+        await loadInfluencerCreators();
+      } catch (err) {
+        banner.textContent = `Discovery failed: ${err}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origLabel;
+      }
+    }
+
+    async function handleCreateInfluencerCampaign(e) {
+      if (e) e.preventDefault();
+      const brand_domain = document.getElementById('infBrandSelect').value;
+      const prompt = document.getElementById('infPromptInput').value.trim();
+      if (!brand_domain) { alert('Select a target brand from Knowledge Base first.'); return; }
+
+      const { platforms, deliverables } = getSelectedInfPlatforms();
+      if (!platforms.length) { alert('Select at least one platform (Twitter/X, LinkedIn, YouTube, or Instagram).'); return; }
+      const auto_discover = Boolean(document.getElementById('infAutoDiscover')?.checked);
+
+      const btn = document.getElementById('btnCreateCampaign');
+      btn.disabled = true;
+      btn.textContent = auto_discover ? 'Scraping & Matching Creators...' : 'Matching Creators...';
+      try {
+        const res = await fetch('/api/influencer/campaigns', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_domain, prompt, auto_discover, overrides: { platforms, deliverables } })
+        });
+        const data = await res.json();
+        if (data.error) alert(data.error);
+        else await Promise.all([loadInfluencerCampaigns(), loadInfluencerCreators()]);
+      } catch (err) {
+        alert('Failed to create campaign: ' + err);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate Brief & Match Creators';
+      }
+    }
+
+    async function loadInfluencerCampaigns() {
+      try {
+        const res = await fetch('/api/influencer/campaigns');
+        const data = await res.json();
+        cachedCampaigns = data.campaigns || [];
+        const badge = document.getElementById('navCampaignsBadge');
+        if (cachedCampaigns.length) {
+          badge.classList.remove('hidden');
+          badge.textContent = cachedCampaigns.length;
+        } else {
+          badge.classList.add('hidden');
+        }
+        renderInfluencerCampaigns();
+      } catch (e) { console.error(e); }
+    }
+
+    function renderInfluencerCampaigns() {
+      const empty = document.getElementById('infCampaignsEmpty');
+      const list = document.getElementById('infCampaignsList');
+      if (!cachedCampaigns.length) {
+        empty.classList.remove('hidden');
+        list.innerHTML = '';
+        return;
+      }
+      empty.classList.add('hidden');
+      list.innerHTML = cachedCampaigns.map(c => {
+        const creators = c.creators || [];
+        const split = (c.kb_snapshot && c.kb_snapshot.platform_split) || {};
+        const splitTxt = Object.entries(split).map(([p, s]) => `${p}: ${s.creators_estimated} creator(s), ~${c.currency} ${s.estimated_spend}`).join(' | ');
+        const commAmt = ((Number(c.budget || 0) * Number(c.commission_pct || 10)) / 100).toFixed(2);
+        const needsSrcUrl = (c.deliverables && ['retweet', 'quote_tweet'].includes(c.deliverables.twitter_x));
+
+        return `
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h5 class="text-sm font-bold text-slate-900">${c.title}</h5>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold uppercase">${c.status}</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-mono">${c.payment_status}</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5 font-mono">${c.brand_domain} | Budget: ${c.currency} ${c.budget} (10% fee: ${c.currency} ${commAmt}) | ${c.timeline_days}d | Start: ${c.start_date}</p>
+                ${splitTxt ? `<p class="text-[11px] text-slate-500 mt-0.5">Split: ${splitTxt}</p>` : ''}
+              </div>
+              <div class="flex flex-wrap gap-2 text-xs">
+                ${c.status === 'shortlist_ready' ? `<button onclick="campaignAction('${c.id}', 'approve')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">Approve Shortlist</button>` : ''}
+                ${(c.status === 'approved' || c.status === 'shortlist_ready') ? `<button onclick="campaignAction('${c.id}', 'fund')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">Fund &amp; Send Outreach</button>` : ''}
+                <button onclick="campaignAction('${c.id}', 'rematch')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-medium">Rematch</button>
+                ${c.payment_status === 'funded' ? `<button onclick="campaignAction('${c.id}', 'resend')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-medium">Resend 48h Links</button>` : ''}
+                ${c.status !== 'cancelled' ? `<button onclick="campaignAction('${c.id}', 'cancel')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-rose-50 border border-slate-300 text-rose-600 font-medium">Cancel</button>` : ''}
+              </div>
+            </div>
+
+            <div class="p-5 space-y-4">
+              ${needsSrcUrl ? `
+                <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+                  <span class="font-semibold text-slate-700">Source Tweet URL (1h edit lock):</span>
+                  <input type="text" id="srcUrl-${c.id}" value="${c.source_post_url || ''}" placeholder="https://x.com/brand/status/..." class="flex-1 bg-white border border-slate-300 rounded-lg px-2.5 py-1 font-mono text-xs">
+                  <button onclick="setSourceTweetUrl('${c.id}')" class="px-3 py-1 rounded-lg bg-slate-800 text-white font-medium">Save URL</button>
+                </div>
+              ` : ''}
+
+              <details class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs">
+                <summary class="font-semibold text-slate-800 cursor-pointer">View Synthesized Knowledge-Base Campaign Brief</summary>
+                <pre class="mt-2 whitespace-pre-wrap font-mono text-[11px] text-slate-700 leading-relaxed">${c.brief_text || ''}</pre>
+              </details>
+
+              <!-- Shortlist / Creators Table -->
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs text-slate-700">
+                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold">
+                    <tr>
+                      <th class="p-3">Creator</th>
+                      <th class="p-3">Platform / Deliverable</th>
+                      <th class="p-3">Match Score</th>
+                      <th class="p-3">Fee</th>
+                      <th class="p-3">Status &amp; Payout</th>
+                      <th class="p-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    ${creators.map(cr => {
+                      const bd = cr.score_breakdown || {};
+                      const profUrl = cr.creator_profile_url || bd.profile_url || '';
+                      const isSample = bd.is_sample === true || (!profUrl);
+                      return `
+                        <tr>
+                          <td class="p-3">
+                            <div class="flex items-center space-x-1.5">
+                              <p class="font-bold text-slate-900">${cr.creator_name}</p>
+                              <span class="text-[9px] px-1.5 py-0.5 rounded ${isSample ? 'bg-slate-100 text-slate-500' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'} font-semibold">${isSample ? 'Unlinked' : 'Verified'}</span>
+                            </div>
+                            ${profUrl
+                              ? `<a href="${profUrl}" target="_blank" class="text-[11px] font-mono text-blue-600 hover:underline inline-flex items-center space-x-1"><span>${cr.creator_handle}</span><span>↗</span></a>`
+                              : `<p class="text-[11px] font-mono text-slate-400">${cr.creator_handle}</p>`}
+                          </td>
+                          <td class="p-3 font-mono text-[11px]">${cr.platform} / ${cr.deliverable_type}</td>
+                          <td class="p-3">
+                            <span class="font-bold text-slate-900">${cr.match_score}/100</span>
+                            <p class="text-[10px] text-slate-400">R:${bd.reach||0} V:${bd.vertical_fit||0} T:${bd.tone_match||0} Rel:${bd.reliability||0} B:${bd.budget_fit||0}</p>
+                          </td>
+                          <td class="p-3 font-mono font-semibold">${c.currency} ${cr.agreed_fee}</td>
+                          <td class="p-3">
+                            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-semibold text-[10px] uppercase">${cr.status}</span>
+                            <span class="block text-[10px] text-slate-500 mt-0.5">Payout: ${cr.payout_status}</span>
+                            ${cr.submission_url ? `<a href="${cr.submission_url}" target="_blank" class="block text-[10px] text-blue-600 hover:underline truncate max-w-[180px]">${cr.submission_url}</a>` : ''}
+                          </td>
+                          <td class="p-3">
+                            <div class="flex flex-wrap gap-1.5 text-[11px]">
+                              ${cr.status === 'invited' ? `<button onclick="creatorAction('${c.id}','${cr.id}','accept')" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 font-medium">Accept</button>` : ''}
+                              ${(cr.status === 'accepted' || cr.status === 'changes_requested') ? `<button onclick="submitCreatorUrl('${c.id}','${cr.id}')" class="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium">Submit URL</button>` : ''}
+                              ${cr.status === 'submitted' ? `<button onclick="creatorAction('${c.id}','${cr.id}','approve')" class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold">Approve &amp; Pay</button><button onclick="creatorAction('${c.id}','${cr.id}','request_changes')" class="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium">Request Changes</button>` : ''}
+                              ${['invited','accepted','submitted','changes_requested'].includes(cr.status) ? `<button onclick="creatorAction('${c.id}','${cr.id}','refund')" class="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium">Refund</button>` : ''}
+                            </div>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 1:1 Campaign Messaging Thread -->
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <input type="text" id="msgInput-${c.id}" placeholder="Send message to creators in this campaign thread..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs">
+                <button onclick="sendCampaignMsg('${c.id}')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold">Send Message</button>
+                <button onclick="openCampaignThread('${c.id}')" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-medium text-slate-700">View Thread</button>
+              </div>
+              <div id="threadBox-${c.id}" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs max-h-44 overflow-y-auto"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function campaignAction(cid, action) {
+      const res = await fetch(`/api/influencer/campaigns/${encodeURIComponent(cid)}/${action}`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      await loadInfluencerCampaigns();
+    }
+
+    async function setSourceTweetUrl(cid) {
+      const url = document.getElementById(`srcUrl-${cid}`).value.trim();
+      const res = await fetch(`/api/influencer/campaigns/${encodeURIComponent(cid)}/source-url`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ source_post_url: url })
+      });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      await loadInfluencerCampaigns();
+    }
+
+    async function creatorAction(cid, ccId, action, extra = {}) {
+      const res = await fetch(`/api/influencer/campaigns/${encodeURIComponent(cid)}/creators/${encodeURIComponent(ccId)}/action`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ action, ...extra })
+      });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      await loadInfluencerCampaigns();
+    }
+
+    async function submitCreatorUrl(cid, ccId) {
+      const url = prompt('Enter submitted post/thread/carousel URL:', 'https://x.com/creator/status/123456789');
+      if (!url) return;
+      await creatorAction(cid, ccId, 'submit', { submission_url: url });
+    }
+
+    async function sendCampaignMsg(cid) {
+      const inp = document.getElementById(`msgInput-${cid}`);
+      const msg = inp.value.trim();
+      if (!msg) return;
+      await fetch(`/api/influencer/campaigns/${encodeURIComponent(cid)}/messages`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ sender_role: 'brand', message: msg })
+      });
+      inp.value = '';
+      await openCampaignThread(cid);
+    }
+
+    async function openCampaignThread(cid) {
+      const box = document.getElementById(`threadBox-${cid}`);
+      box.classList.remove('hidden');
+      const res = await fetch(`/api/influencer/campaigns/${encodeURIComponent(cid)}`);
+      const data = await res.json();
+      const msgs = data.messages || [];
+      box.innerHTML = msgs.length
+        ? msgs.map(m => `<div><span class="font-bold uppercase text-[10px] text-blue-700">${m.sender_role}:</span> <span class="text-slate-700">${m.message}</span></div>`).join('')
+        : '<span class="text-slate-400 italic">No messages yet.</span>';
+    }
+
+    async function loadInfluencerCreators() {
+      try {
+        const res = await fetch('/api/influencer/creators');
+        const data = await res.json();
+        const creators = data.creators || [];
+        document.getElementById('infCreatorsCountBadge').textContent = `${creators.length} creators (${data.storage || ''})`;
+        const body = document.getElementById('infCreatorsBody');
+        body.innerHTML = creators.map(cr => {
+          const profUrl = cr.profile_url || '';
+          const isSample = cr.is_sample === true || (!profUrl);
+          return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3">
+              <div class="flex items-center space-x-1.5">
+                <p class="font-bold text-slate-900">${cr.name}</p>
+                <span class="text-[9px] px-1.5 py-0.5 rounded ${isSample ? 'bg-slate-100 text-slate-500' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'} font-semibold">${isSample ? 'Unlinked' : 'Verified'}</span>
+              </div>
+              ${profUrl
+                ? `<a href="${profUrl}" target="_blank" class="text-[11px] font-mono text-blue-600 hover:underline inline-flex items-center space-x-1"><span>${profUrl}</span><span>↗</span></a>`
+                : `<p class="text-[11px] font-mono text-slate-400">${cr.handle}</p>`}
+            </td>
+            <td class="p-3 font-mono text-[11px]">${cr.platform}</td>
+            <td class="p-3 text-[11px]"><div>${(cr.verticals||[]).join(', ')}</div><div class="text-slate-400">${(cr.tone_tags||[]).join(', ')}</div></td>
+            <td class="p-3 font-mono">${Number(cr.followers_count||0).toLocaleString()} (${cr.engagement_rate}%)</td>
+            <td class="p-3 font-mono">${cr.currency||'USD'} ${cr.min_rate}</td>
+            <td class="p-3 font-mono">${Math.round((cr.acceptance_rate||0)*100)}% / ${Math.round((cr.on_time_rate||0)*100)}%</td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${cr.approval_status === 'approved' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800'}">${cr.approval_status}</span>
+              ${cr.approval_status === 'pending' ? `<button onclick="approveCreator('${cr.id}')" class="ml-2 px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-semibold">Approve</button>` : ''}
+            </td>
+          </tr>
+        `;
+        }).join('');
+      } catch (e) { console.error(e); }
+    }
+
+    async function handleRegisterCreator(e) {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('crName').value,
+        handle: document.getElementById('crHandle').value,
+        platform: document.getElementById('crPlatform').value,
+        verticals: document.getElementById('crVerticals').value,
+        tone_tags: document.getElementById('crTones').value,
+        followers_count: document.getElementById('crFollowers').value,
+        min_rate: document.getElementById('crRate').value,
+        bio: document.getElementById('crBio').value,
+        profile_url: document.getElementById('crProfileUrl').value,
+      };
+      const res = await fetch('/api/influencer/creators', {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      else { e.target.reset(); await loadInfluencerCreators(); }
+    }
+
+    async function approveCreator(cid) {
+      await fetch(`/api/influencer/creators/${encodeURIComponent(cid)}/approve`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ approval_status: 'approved' })
+      });
+      await loadInfluencerCreators();
+    }
+
     // Initialize
-    checkServerStatus();
     checkSupabaseStatus();
     loadLatestResults();
-    setInterval(checkServerStatus, 5000);
+    loadBrandKnowledgeList();
     setInterval(checkSupabaseStatus, 10000);
   </script>
 
@@ -1293,6 +2165,5 @@ class CustomSpider(scrapy.Spider):
       </div>
     </div>
   </div>
-  </script>
 </body>
 </html>

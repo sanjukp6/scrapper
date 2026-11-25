@@ -13,11 +13,52 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE_DIR))
 
 try:
-    from supabase_client import save_extraction_to_supabase, check_supabase_health, get_supabase_config
+    from supabase_client import (
+        save_extraction_to_supabase,
+        check_supabase_health,
+        get_supabase_config,
+        list_brands,
+        get_brand_dossier,
+        list_brand_events,
+        backfill_extractions_to_brands,
+        get_brand_documents,
+        regenerate_brand_documents,
+    )
 except ImportError:
     save_extraction_to_supabase = None
     check_supabase_health = None
     get_supabase_config = None
+    list_brands = None
+    get_brand_dossier = None
+    list_brand_events = None
+    backfill_extractions_to_brands = None
+    get_brand_documents = None
+    regenerate_brand_documents = None
+
+try:
+    from influencer_store import (
+        list_creators,
+        register_creator,
+        set_creator_approval,
+        discover_creators_for_brand,
+        create_campaign,
+        list_campaigns,
+        get_campaign_detail,
+        transition_campaign,
+        transition_campaign_creator,
+        post_campaign_message,
+    )
+except ImportError:
+    list_creators = None
+    register_creator = None
+    set_creator_approval = None
+    discover_creators_for_brand = None
+    create_campaign = None
+    list_campaigns = None
+    get_campaign_detail = None
+    transition_campaign = None
+    transition_campaign_creator = None
+    post_campaign_message = None
 
 SCRAPY_EXE = BASE_DIR / "scrapy" / ".venv" / "Scripts" / "scrapy.exe"
 RUNS_DIR = Path(__file__).resolve().parent / "runs"
@@ -55,6 +96,7 @@ class CrawlJob:
         self.items = []
         self.overview = {}
         self.competitors = []
+        self.competitor_query = ""
         self.json_ld = []
         self.listeners = []
         self.error = None
@@ -85,6 +127,8 @@ class CrawlJob:
                                         self.overview = obj.get("overview", {})
                                     elif t == "discovered_competitors":
                                         self.competitors = obj.get("competitors", [])
+                                        if obj.get("query"):
+                                            self.competitor_query = obj.get("query", "")
                                     elif t == "website_extraction":
                                         self.overview = obj.get("overview", {})
                                         self.items.extend(obj.get("items", []))
@@ -148,6 +192,8 @@ async def run_spider_process(job: CrawlJob):
                             comp_data = json.loads(payload_str)
                             job.competitors = comp_data.get("competitors", [])
                             query_str = comp_data.get("query", "")
+                            if query_str:
+                                job.competitor_query = query_str
                             for queue in list(job.listeners):
                                 try:
                                     queue.put_nowait({
@@ -203,7 +249,7 @@ async def sync_job_to_supabase(job):
 
     target_url = ""
     max_pages = 1
-    competitor_query = ""
+    competitor_query = getattr(job, "competitor_query", "") or ""
     for arg in job.spider_args:
         if arg.startswith("target_url="):
             target_url = arg.split("target_url=", 1)[1]
@@ -221,7 +267,7 @@ async def sync_job_to_supabase(job):
         target_url = "https://unknown"
 
     try:
-        job.add_log("[*] Storing extraction results to Supabase database...")
+        job.add_log("[*] Storing extraction & building collective brand knowledge in Supabase...")
         res = await save_extraction_to_supabase(
             job_id=job.id,
             url=target_url,
@@ -233,11 +279,21 @@ async def sync_job_to_supabase(job):
             competitor_query=competitor_query
         )
         if res.get("success"):
-            job.add_log(f"[✓] Successfully stored to Supabase: {res.get('stored_items')} items, {res.get('stored_competitors')} competitors.")
+            agg = res.get("brand_aggregation") or {}
+            if agg.get("brand_saved"):
+                job.add_log(
+                    f"[✓] Collective Brand KB updated for {agg.get('brand_domain')} "
+                    f"({agg.get('brand_items_upserted')} items, event: {agg.get('event_type')})"
+                )
+            else:
+                job.add_log(
+                    f"[✓] Stored raw extraction to Supabase: {res.get('stored_items')} items, "
+                    f"{res.get('stored_competitors')} competitors."
+                )
         else:
             errs = "; ".join(res.get("errors", []))
             job.add_log(f"[!] Supabase note: {errs}")
-            if "Could not find the table" in errs:
+            if "Could not find the table" in errs or "missing" in errs:
                 job.add_log("[!] Please execute schema_supabase.sql in Supabase SQL Editor to initialize tables.")
     except Exception as e:
         job.add_log(f"[!] Supabase sync exception: {e}")
@@ -646,7 +702,8 @@ async def handle_supabase_sync(request):
         overview=job.overview,
         items=job.items,
         competitors=job.competitors,
-        status=job.status
+        status=job.status,
+        competitor_query=getattr(job, "competitor_query", "") or ""
     )
     return web.json_response(res)
 
@@ -657,6 +714,206 @@ async def handle_supabase_schema(request):
             return web.Response(text=f.read(), content_type="text/plain")
     return web.Response(text="schema_supabase.sql not found", status=404)
 
+async def handle_list_brands(request):
+    if not list_brands:
+        return web.json_response({"brands": [], "count": 0, "error": "supabase_client unavailable"})
+    q = request.query.get("q", "").strip()
+    data = await list_brands(search_query=q)
+    return web.json_response(data)
+
+async def handle_get_brand_dossier(request):
+    if not get_brand_dossier:
+        return web.json_response({"error": "supabase_client unavailable"}, status=500)
+    domain = request.match_info.get("domain", "")
+    dossier = await get_brand_dossier(domain)
+    if not dossier:
+        return web.json_response({"error": f"Brand '{domain}' not found"}, status=404)
+    return web.json_response(dossier)
+
+async def handle_export_brand_dossier(request):
+    if not get_brand_dossier:
+        return web.Response(text="supabase_client unavailable", status=500)
+    domain = request.match_info.get("domain", "")
+    fmt = request.query.get("format", "json").lower()
+    dossier = await get_brand_dossier(domain)
+    if not dossier:
+        return web.Response(text="Brand not found", status=404)
+
+    brand = dossier["brand"]
+    safe_domain = brand.get("domain", domain).replace(".", "_")
+    if fmt == "md":
+        md_text = brand.get("knowledge_markdown") or ""
+        return web.Response(
+            text=md_text,
+            content_type="text/markdown",
+            headers={"Content-Disposition": f'attachment; filename="{safe_domain}_knowledge.md"'}
+        )
+    else:
+        payload = {
+            "collective_knowledge": brand.get("collective_knowledge") or {},
+            "items": dossier.get("items", []),
+            "competitors": dossier.get("competitors", []),
+        }
+        return web.Response(
+            text=json.dumps(payload, indent=2, ensure_ascii=False),
+            content_type="application/json",
+            headers={"Content-Disposition": f'attachment; filename="{safe_domain}_knowledge.json"'}
+        )
+
+async def handle_list_brand_events(request):
+    if not list_brand_events:
+        return web.json_response({"events": [], "count": 0, "error": "supabase_client unavailable"})
+    domain = request.query.get("domain", "").strip()
+    data = await list_brand_events(domain=domain)
+    return web.json_response(data)
+
+async def handle_backfill_brands(request):
+    if not backfill_extractions_to_brands:
+        return web.json_response({"error": "supabase_client unavailable"}, status=500)
+    res = await backfill_extractions_to_brands()
+    return web.json_response(res)
+
+async def handle_list_brand_documents(request):
+    if not get_brand_documents:
+        return web.json_response({"documents": [], "error": "supabase_client unavailable"}, status=500)
+    domain = request.match_info.get("domain", "")
+    docs = await get_brand_documents(domain)
+    return web.json_response({"domain": domain, "documents": docs, "count": len(docs)})
+
+async def handle_get_brand_document_txt(request):
+    if not get_brand_documents:
+        return web.Response(text="supabase_client unavailable", status=500)
+    domain = request.match_info.get("domain", "")
+    doc_key = request.match_info.get("doc_key", "").replace(".txt", "").strip().lower()
+    docs = await get_brand_documents(domain)
+    for d in docs:
+        if d.get("doc_key") == doc_key or (d.get("filename") or "").replace(".txt", "").lower() == doc_key:
+            fname = d.get("filename") or f"{doc_key}.txt"
+            return web.Response(
+                text=d.get("content_txt") or "",
+                content_type="text/plain",
+                charset="utf-8",
+                headers={"Content-Disposition": f'inline; filename="{fname}"'}
+            )
+    return web.Response(text=f"Document '{doc_key}.txt' not found for '{domain}'", status=404)
+
+async def handle_regenerate_brand_documents(request):
+    if not regenerate_brand_documents:
+        return web.json_response({"error": "supabase_client unavailable"}, status=500)
+    domain = request.match_info.get("domain", "")
+    res = await regenerate_brand_documents(domain)
+    return web.json_response(res)
+
+# ================= INFLUENCER AGENT HANDLERS =================
+async def handle_influencer_list_creators(request):
+    if not list_creators:
+        return web.json_response({"creators": [], "error": "influencer_store unavailable"}, status=500)
+    plat = request.query.get("platform", "").strip()
+    status = request.query.get("approval_status", "").strip()
+    return web.json_response(await list_creators(platform=plat, approval_status=status))
+
+async def handle_influencer_register_creator(request):
+    if not register_creator:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    data = await get_request_data(request)
+    res = await register_creator(data)
+    status_code = 400 if res.get("error") else 200
+    return web.json_response(res, status=status_code)
+
+async def handle_influencer_approve_creator(request):
+    if not set_creator_approval:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    cid = request.match_info.get("creator_id", "")
+    data = await get_request_data(request)
+    st = (data.get("approval_status") or "approved").strip()
+    creator = await set_creator_approval(cid, st)
+    if not creator:
+        return web.json_response({"error": "Creator not found or invalid status"}, status=404)
+    return web.json_response({"creator": creator})
+
+async def handle_influencer_discover(request):
+    if not discover_creators_for_brand:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    data = await get_request_data(request)
+    domain = (data.get("brand_domain") or "").strip()
+    query = (data.get("query") or "").strip()
+    platforms = data.get("platforms") or None
+    if not domain and not query:
+        return web.json_response({"error": "Provide brand_domain or niche query"}, status=400)
+    res = await discover_creators_for_brand(brand_domain=domain, custom_query=query, platforms=platforms)
+    return web.json_response(res)
+
+async def handle_influencer_list_campaigns(request):
+    if not list_campaigns:
+        return web.json_response({"campaigns": [], "error": "influencer_store unavailable"}, status=500)
+    domain = request.query.get("brand_domain", "").strip()
+    return web.json_response(await list_campaigns(brand_domain=domain))
+
+async def handle_influencer_create_campaign(request):
+    if not create_campaign:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    data = await get_request_data(request)
+    domain = (data.get("brand_domain") or "").strip()
+    prompt = (data.get("prompt") or "").strip()
+    overrides = data.get("overrides") or {
+        k: data[k] for k in ("platforms", "deliverables", "budget", "currency", "creator_count", "timeline_days", "start_date", "tone", "goal", "title")
+        if data.get(k) is not None
+    }
+    if not domain:
+        return web.json_response({"error": "brand_domain is required"}, status=400)
+    if data.get("auto_discover"):
+        overrides["auto_discover"] = True
+    res = await create_campaign(domain, prompt, overrides=overrides)
+    if res.get("error"):
+        return web.json_response(res, status=400)
+    return web.json_response(res)
+
+async def handle_influencer_get_campaign(request):
+    if not get_campaign_detail:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    cid = request.match_info.get("campaign_id", "")
+    detail = await get_campaign_detail(cid)
+    if not detail:
+        return web.json_response({"error": "Campaign not found"}, status=404)
+    return web.json_response(detail)
+
+async def handle_influencer_campaign_action(request, action_name: str):
+    if not transition_campaign:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    cid = request.match_info.get("campaign_id", "")
+    data = await get_request_data(request)
+    res = await transition_campaign(cid, action_name, data)
+    if res.get("error"):
+        return web.json_response(res, status=400)
+    return web.json_response(res)
+
+async def handle_influencer_creator_action(request):
+    if not transition_campaign_creator:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    cid = request.match_info.get("campaign_id", "")
+    cr_id = request.match_info.get("creator_id", "")
+    data = await get_request_data(request)
+    action = (data.get("action") or "").strip()
+    res = await transition_campaign_creator(cid, cr_id, action, data)
+    if res.get("error"):
+        return web.json_response(res, status=400)
+    return web.json_response(res)
+
+async def handle_influencer_post_message(request):
+    if not post_campaign_message:
+        return web.json_response({"error": "influencer_store unavailable"}, status=500)
+    cid = request.match_info.get("campaign_id", "")
+    data = await get_request_data(request)
+    res = await post_campaign_message(
+        cid,
+        sender_role=data.get("sender_role") or "brand",
+        message=data.get("message") or "",
+        creator_id=data.get("creator_id"),
+    )
+    if res.get("error"):
+        return web.json_response(res, status=400)
+    return web.json_response(res)
+
 def create_app():
     app = web.Application()
     app.router.add_get("/", handle_index)
@@ -666,6 +923,26 @@ def create_app():
     app.router.add_get("/api/supabase/status", handle_supabase_status)
     app.router.add_post("/api/supabase/sync/{job_id}", handle_supabase_sync)
     app.router.add_get("/api/supabase/schema", handle_supabase_schema)
+    app.router.add_get("/api/brands", handle_list_brands)
+    app.router.add_post("/api/brands/backfill", handle_backfill_brands)
+    app.router.add_get("/api/brands/{domain}", handle_get_brand_dossier)
+    app.router.add_get("/api/brands/{domain}/export", handle_export_brand_dossier)
+    app.router.add_get("/api/brands/{domain}/documents", handle_list_brand_documents)
+    app.router.add_post("/api/brands/{domain}/documents/generate", handle_regenerate_brand_documents)
+    app.router.add_get("/api/brands/{domain}/documents/{doc_key}", handle_get_brand_document_txt)
+    app.router.add_get("/api/events", handle_list_brand_events)
+    app.router.add_get("/api/influencer/creators", handle_influencer_list_creators)
+    app.router.add_post("/api/influencer/creators", handle_influencer_register_creator)
+    app.router.add_post("/api/influencer/creators/{creator_id}/approve", handle_influencer_approve_creator)
+    app.router.add_post("/api/influencer/discover", handle_influencer_discover)
+    app.router.add_get("/api/influencer/campaigns", handle_influencer_list_campaigns)
+    app.router.add_post("/api/influencer/campaigns", handle_influencer_create_campaign)
+    app.router.add_get("/api/influencer/campaigns/{campaign_id}", handle_influencer_get_campaign)
+    for act in ("approve", "fund", "rematch", "resend", "cancel"):
+        app.router.add_post(f"/api/influencer/campaigns/{{campaign_id}}/{act}", lambda r, _a=act: handle_influencer_campaign_action(r, _a))
+    app.router.add_post("/api/influencer/campaigns/{campaign_id}/source-url", lambda r: handle_influencer_campaign_action(r, "source_url"))
+    app.router.add_post("/api/influencer/campaigns/{campaign_id}/creators/{creator_id}/action", handle_influencer_creator_action)
+    app.router.add_post("/api/influencer/campaigns/{campaign_id}/messages", handle_influencer_post_message)
     app.router.add_post("/api/scrape/universal", handle_universal_scrape)
     app.router.add_post("/api/scrape/quick", handle_quick_scrape)
     app.router.add_post("/api/scrape/file", handle_run_existing)

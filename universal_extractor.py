@@ -211,15 +211,35 @@ class UniversalSpider(scrapy.Spider):
             h1s = [h.strip() for h in response.css("h1::text, h1 *::text").getall() if h.strip()]
             h2s = [h.strip() for h in response.css("h2::text, h2 *::text").getall() if h.strip()]
 
+            # Extract visible body copy for Brand Voice analysis
+            body_chunks = [
+                re.sub(r"\s+", " ", t).strip()
+                for t in response.xpath("//body//p//text() | //body//li//text() | //body//blockquote//text()").getall()
+                if t and t.strip() and len(t.strip()) > 20
+            ]
+            seen_copy = []
+            for chunk in body_chunks:
+                if chunk not in seen_copy:
+                    seen_copy.append(chunk)
+            page_copy = " ".join(seen_copy)[:4000]
+
             html_text = response.text
-            emails = list(set(re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', html_text)))
-            emails = [e for e in emails if not any(e.endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif', '.js', '.css']) and 'example.com' not in e]
+            emails = list(set(re.findall(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})*', html_text)))
+            emails = [
+                e for e in emails
+                if not any(e.lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif', '.js', '.css', '.woff', '.ttf'])
+                and 'example.com' not in e.lower()
+                and 'sentry.io' not in e.lower()
+            ]
 
             social_links = {}
             for a in response.css("a::attr(href)").getall():
                 href = urljoin(response.url, a)
+                parsed_href = urlparse(href)
+                if not parsed_href.path.strip("/"):
+                    continue
                 for platform in ["twitter.com", "x.com", "linkedin.com", "github.com", "facebook.com", "instagram.com", "youtube.com"]:
-                    if platform in href:
+                    if platform in parsed_href.netloc.lower():
                         key = platform.split(".")[0]
                         if key not in social_links:
                             social_links[key] = href
@@ -236,6 +256,7 @@ class UniversalSpider(scrapy.Spider):
                 "canonical": canonical,
                 "h1": h1s,
                 "h2": h2s,
+                "page_copy": page_copy,
                 "emails": emails,
                 "social_links": social_links,
                 "is_spa": is_spa,
@@ -288,13 +309,26 @@ class UniversalSpider(scrapy.Spider):
             d = m.groupdict()
             name = d.get("name")
             if name:
+                def _split_notes(raw_notes):
+                    return [n.strip('" \t') for n in raw_notes.split(",") if n.strip('" \t')] if raw_notes else []
+
+                stock_num = int(d["stock"]) if d.get("stock") and d["stock"].isdigit() else None
                 it = {
                     "type": "product_item",
                     "title": name,
                     "brand": d.get("brand") or "Brand",
                     "category": d.get("category"),
+                    "variant": d.get("variant"),
                     "price": f"₹{d.get('price')}" if d.get("price") else None,
+                    "original_price": f"₹{d.get('original_price')}" if d.get("original_price") else None,
+                    "offer_tag": d.get("offer_tag") or None,
+                    "stock": stock_num,
+                    "stock_status": "out_of_stock" if stock_num == 0 else ("in_stock" if stock_num is not None else None),
                     "rating": d.get("rating"),
+                    "review_count": int(d["reviews"]) if d.get("reviews") and d["reviews"].isdigit() else None,
+                    "top_notes": _split_notes(d.get("top")),
+                    "heart_notes": _split_notes(d.get("heart")),
+                    "base_notes": _split_notes(d.get("base")),
                     "mood": d.get("mood"),
                     "image": d.get("image"),
                     "description": d.get("desc"),
@@ -316,41 +350,101 @@ class UniversalSpider(scrapy.Spider):
                 }
                 yield it
 
-    def generate_competitor_query(self, title, description, items, site_url):
-        clean_title = re.sub(r'^\s*[^|•\-—:]+\s*[|•\-—:]\s*', '', title)
-        clean_title = re.sub(r'\s*[|•\-—:].*$', '', clean_title)
-        query = re.sub(r'[^a-zA-Z0-9\s]', ' ', clean_title).strip()
-        words = [w for w in query.split() if w.lower() not in ['home', 'welcome', 'official', 'site', 'website', 'page', 'the', 'and', 'for']]
-        
-        categories = [it.get("category") for it in items if it.get("category") and isinstance(it.get("category"), str)]
-        cat_part = categories[0] if categories else ""
+    def generate_competitor_query(self, overview, items, site_url):
+        """Derive a product/category competitor search query (never searching the brand's own name)."""
+        from collections import Counter
 
-        if words:
-            base_kw = " ".join(words[:4])
-        elif cat_part:
-            base_kw = cat_part
-        elif description:
-            desc_words = [w for w in re.sub(r'[^a-zA-Z0-9\s]', ' ', description).split() if len(w) > 3]
-            base_kw = " ".join(desc_words[:4])
-        else:
-            domain = urlparse(site_url).netloc.split('.')[0]
-            base_kw = domain
+        title = (overview.get("title") or "").strip()
+        description = (overview.get("description") or "").strip()
+        page_copy = (overview.get("page_copy") or "").strip()
+        h1_h2 = " ".join((overview.get("h1") or []) + (overview.get("h2") or []))
 
-        return f"{base_kw} brands online store"
+        parsed_site = urlparse(site_url)
+        netloc = parsed_site.netloc.lower()
+        if netloc.startswith("www."):
+            netloc = netloc[4:]
+        domain_root = netloc.split(".")[0] if netloc else ""
+
+        stop_words = {
+            "home", "welcome", "official", "site", "website", "page", "store", "shop",
+            "online", "the", "and", "for", "with", "your", "our", "from", "this", "that",
+            "you", "are", "all", "new", "best", "buy", "top", "india", "global", "pvt",
+            "ltd", "inc", "llc", "rights", "reserved", "enter", "world", "explore",
+            "exclusive", "collection", "try", "surprised", "free", "shipping", "exchange",
+            "returns", "customer", "service", "stunningly", "comfortable", "certified",
+            "item", "items", "products", "product", "category", "categories", "perfect",
+            "now", "more", "view", "details", "cart", "checkout", "login", "policy",
+        }
+        if domain_root:
+            stop_words.add(domain_root)
+            for part in re.split(r"[-_]+", domain_root):
+                if len(part) >= 3 and part not in {"scents", "perfume", "shoes", "sandals", "bakery", "foods"}:
+                    stop_words.add(part)
+
+        # Split title only on spaced separators or | • — :, preserving hyphenated words like Sugar-Free
+        title_segments = [
+            seg.strip() for seg in re.split(r"\s*[|•—–:]\s*|\s+-\s+", title)
+            if seg.strip() and seg.strip().lower() != domain_root
+        ]
+        clean_title_str = " ".join(title_segments)
+
+        product_nouns = {
+            "sandals", "sandal", "shoes", "shoe", "footwear", "sneakers", "heels", "boots",
+            "slippers", "clogs", "loafers", "perfume", "perfumes", "fragrance", "fragrances",
+            "scent", "scents", "cologne", "attar", "sweets", "cakes", "cake", "cookies",
+            "sweeteners", "keto", "skincare", "serum", "cleanser", "moisturizer", "makeup",
+            "lipstick", "clothing", "apparel", "tshirts", "jeans", "dresses", "watches",
+            "jewelry", "jewellery", "bags", "backpacks", "wallets", "furniture", "coffee",
+            "tea", "chocolate", "chocolates", "supplements", "protein", "eyewear", "sunglasses",
+        }
+
+        weighted_tokens = Counter()
+
+        def _add_tokens(text_blob, weight):
+            for tok in re.findall(r"[a-zA-Z]{3,}", (text_blob or "").lower()):
+                if tok in stop_words:
+                    continue
+                boost = 3 if tok in product_nouns else 1
+                weighted_tokens[tok] += weight * boost
+
+        # 1. Item categories, titles, and category URL slugs
+        for it in (items or []):
+            if not isinstance(it, dict):
+                continue
+            _add_tokens(it.get("category") or "", 4)
+            _add_tokens(it.get("title") or it.get("name") or "", 2)
+            link = it.get("link") or ""
+            if "/product-category/" in link or "/collections/" in link:
+                slug = link.rstrip("/").split("/")[-1].replace("-", " ")
+                _add_tokens(slug, 3)
+
+        # 2. Clean title segments, meta description, headings, and page copy
+        _add_tokens(clean_title_str, 3)
+        _add_tokens(description, 2)
+        _add_tokens(h1_h2, 2)
+        _add_tokens(page_copy[:2500], 1)
+
+        top_keywords = [w for w, _ in weighted_tokens.most_common(6)]
+        # Prefer explicit product nouns at the front of the query
+        niche_first = [w for w in top_keywords if w in product_nouns] + [w for w in top_keywords if w not in product_nouns]
+        chosen = niche_first[:4] if niche_first else [domain_root or "ecommerce"]
+
+        base_kw = " ".join(chosen)
+        query = f"{base_kw} brands online store"
+        return query, chosen
 
     def fetch_competitors(self, overview, target_url, items):
-        query = self.generate_competitor_query(
-            overview.get("title", ""),
-            overview.get("description", ""),
-            items,
-            target_url
-        )
+        query, niche_keywords = self.generate_competitor_query(overview, items, target_url)
         self.logger.info(f"Searching competitor websites for niche: '{query}'...")
         ddg_url = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote_plus(query)}"
         yield scrapy.Request(
             ddg_url,
             callback=self.parse_competitors,
-            meta={"target_domain": urlparse(target_url).netloc, "query": query},
+            meta={
+                "target_domain": urlparse(target_url).netloc,
+                "query": query,
+                "niche_keywords": niche_keywords,
+            },
             priority=100,
             dont_filter=True,
             errback=lambda failure: self.logger.warning("Competitor search query failed.")
@@ -360,15 +454,21 @@ class UniversalSpider(scrapy.Spider):
         target_domain = response.meta.get("target_domain", "").lower()
         if target_domain.startswith("www."):
             target_domain = target_domain[4:]
+        brand_root = target_domain.split(".")[0] if target_domain else ""
+        niche_keywords = [k.lower() for k in (response.meta.get("niche_keywords") or [])]
 
-        competitors = []
+        candidates = []
         seen_domains = {target_domain, "duckduckgo.com", "google.com"}
         ignored_domains = {
             "wikipedia.org", "facebook.com", "instagram.com", "twitter.com", "x.com",
             "youtube.com", "linkedin.com", "pinterest.com", "reddit.com", "amazon.com",
-            "amazon.in", "flipkart.com", "quora.com", "medium.com", "esquireindia.co.in",
-            "highsnobiety.com", "fragrantica.com", "tiktok.com"
+            "amazon.in", "flipkart.com", "walmart.com", "ebay.com", "etsy.com", "quora.com",
+            "medium.com", "esquireindia.co.in", "highsnobiety.com", "fragrantica.com",
+            "tiktok.com", "myntra.com", "ajio.com", "nykaa.com", "meesho.com",
         }
+        off_topic_noise = {"whiskey", "whisky", "bourbon", "vodka", "tequila", "liquor", "winery", "casino", "betting"}
+        allowed_noise = off_topic_noise & set(niche_keywords)
+        blocked_noise = off_topic_noise - allowed_noise
 
         for res in response.css(".result"):
             href = res.css(".result__url::attr(href)").get() or ""
@@ -384,6 +484,10 @@ class UniversalSpider(scrapy.Spider):
             if not domain or domain in seen_domains or any(ign in domain for ign in ignored_domains):
                 continue
 
+            # Exclude homonymous domains sharing the target's exact brand name (e.g. happenstancewhiskey.com)
+            if len(brand_root) >= 5 and brand_root in domain:
+                continue
+
             seen_domains.add(domain)
 
             comp_title = (
@@ -392,18 +496,25 @@ class UniversalSpider(scrapy.Spider):
                 or domain
             ).strip()
             comp_snippet = " ".join([t.strip() for t in res.css(".result__snippet::text").getall() if t.strip()]).strip()
+            combined_text = f"{domain} {comp_title} {comp_snippet}".lower()
+
+            if any(bad in combined_text for bad in blocked_noise):
+                continue
+
+            relevance_score = sum(1 for kw in niche_keywords if kw in combined_text)
             root_url = f"{parsed_comp.scheme}://{parsed_comp.netloc}"
 
-            competitors.append({
+            candidates.append((relevance_score, {
                 "name": comp_title,
                 "domain": domain,
                 "url": root_url,
                 "snippet": comp_snippet[:220],
                 "badge": "Similar Brand"
-            })
+            }))
 
-            if len(competitors) >= 5:
-                break
+        # Rank by niche keyword overlap, preserving DuckDuckGo rank on ties
+        candidates.sort(key=lambda pair: pair[0], reverse=True)
+        competitors = [c for _, c in candidates[:5]]
 
         query_str = response.meta.get("query", "")
         self.logger.info(f"Discovered {len(competitors)} competitor brands: {[c['domain'] for c in competitors]}")
